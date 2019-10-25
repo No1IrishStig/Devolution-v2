@@ -160,7 +160,7 @@ class Core(commands.Cog):
     @commands.command(no_pm=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def bug(self, ctx):
-        f = await ctx.send(embed=lib.Editable("https://github.com/No1IrishStig/Devolution-v2/issues", "", "Bug Report"))
+        f = await ctx.send(embed=lib.Editable("https://github.com/No1IrishStig/Devolution-Beta/issues", "", "Bug Report"))
         await lib.erase(ctx, f)
 
     @commands.command()
