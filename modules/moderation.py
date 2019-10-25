@@ -939,18 +939,18 @@ class Moderation(commands.Cog):
 
 
     def warn_exists(self, GID):
-        if sql.tableCheck("Warnings", GID):
+        if sql.tableCheck("devolution_warnings", GID):
             return True
 
     def user_exists(self, UID, GID):
         if self.warn_exists(GID):
-            if sql.Entry_Check(UID, "USERID", "Warnings", GID):
+            if sql.Entry_Check(UID, "USERID", "devolution_warnings", GID):
                 return True
 
     def warn_create(self, GID):
         GID = str(GID)
-        mydb = sql.createConnection("Warnings")
-        query = (f"CREATE TABLE `Warnings`.`{GID}` (USERID VARCHAR(32), name VARCHAR(32), count INT(5))")
+        mydb = sql.createConnection("devolution_warnings")
+        query = (f"CREATE TABLE `devolution_warnings`.`{GID}` (USERID VARCHAR(32), name VARCHAR(32), count INT(5))")
         cur = mydb.cursor()
         cur.execute(query)
         self.log(f"Warnings Table Created for {GID}")
@@ -961,7 +961,7 @@ class Moderation(commands.Cog):
         if not self.user_exists(UID, GID):
             mydb = sql.createConnection("Economy")
             cur = mydb.cursor()
-            cur.execute(f"INSERT into `Warnings`.`{GID}` VALUES ('{user.id}', '{user.name}', 0)")
+            cur.execute(f"INSERT into `devolution_warnings`.`{GID}` VALUES ('{user.id}', '{user.name}', 0)")
             mydb.commit()
             self.log(f"Warnings Profile Created for {user.id} in {GID}")
             return True
@@ -972,7 +972,7 @@ class Moderation(commands.Cog):
         GID = str(GID)
         UID = str(UID)
         if self.user_exists(UID, GID):
-            warns = str(sql.Fetch("count", "Warnings", str(GID), "USERID", str(UID)))
+            warns = str(sql.Fetch("count", "devolution_warnings", str(GID), "USERID", str(UID)))
             return warns.replace(",", " ")
 
     def add_warn(self, GID, UID):
@@ -980,9 +980,9 @@ class Moderation(commands.Cog):
         if self.user_exists(UID, GID):
             warns = self.get_warns(GID, UID)
             nwarns = int(warns) + 1
-            mydb = sql.createConnection("Warnings")
+            mydb = sql.createConnection("devolution_warnings")
             cur = mydb.cursor()
-            cur.execute(f"UPDATE `Warnings`.`{GID}` SET count = {nwarns} WHERE USERID = {UID}")
+            cur.execute(f"UPDATE `devolution_warnings`.`{GID}` SET count = {nwarns} WHERE USERID = {UID}")
             self.log(f"Warnings Updated for {UID} in {GID}: {warns} -> {nwarns}")
             mydb.commit()
         else:
@@ -1003,9 +1003,9 @@ class Moderation(commands.Cog):
         if self.user_exists(UID, GID):
             warns = int(self.get_warns(GID, UID))
             nwarns = warns - num
-            mydb = sql.createConnection("Warnings")
+            mydb = sql.createConnection("devolution_warnings")
             cur = mydb.cursor()
-            cur.execute(f"UPDATE `Warnings`.`{GID}` SET count = {nwarns} WHERE USERID = {UID}")
+            cur.execute(f"UPDATE `devolution_warnings`.`{GID}` SET count = {nwarns} WHERE USERID = {UID}")
             self.log(f"Warnings Updated for {UID} in {GID}: {warns} -> {nwarns}")
             mydb.commit()
         else:

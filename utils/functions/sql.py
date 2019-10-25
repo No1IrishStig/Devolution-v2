@@ -18,7 +18,7 @@ def createConnection(db):
 
 def Init():
     rows = []
-    db_list = ["Economy", "Warnings", "Leveling"]
+    db_list = ["devolution", "devolution_economy", "devolution_economy", "devolution_leveling"]
     mydb = mysql.connector.connect(
         host=config.mysql_host,
         user=config.mysql_user,
@@ -32,7 +32,7 @@ def Init():
             rows.append("".join(Row))
     for db in db_list:
         if not db in rows:
-            mycursor.execute(f"CREATE DATABASE {db}")
+            mycursor.execute(f"CREATE DATABASE IF NOT EXISTS {db}")
             print(f"Generating Database: {db}")
 
 def db_check(db):

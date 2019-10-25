@@ -420,8 +420,8 @@ class Economy(commands.Cog):
 
     def bank_create(self, GID):
         GID = str(GID)
-        mydb = sql.createConnection("Economy")
-        query = (f"CREATE TABLE `Economy`.`{GID}` (USERID VARCHAR(32), name VARCHAR(32), balance INT(11))")
+        mydb = sql.createConnection("devolution_economy")
+        query = (f"CREATE TABLE `devolution_economy`.`{GID}` (USERID VARCHAR(32), name VARCHAR(32), balance INT(11))")
         cur = mydb.cursor()
         cur.execute(query)
         self.log(f"Bank Generated for {GID}")
@@ -430,28 +430,28 @@ class Economy(commands.Cog):
         GID = str(GID)
         UID = str(UID)
         if self.bank_exists(GID):
-            if sql.Entry_Check(UID, "USERID", "Economy", GID):
+            if sql.Entry_Check(UID, "USERID", "devolution_economy", GID):
                 return True
 
     def bank_exists(self, GID):
         GID = str(GID)
-        if sql.tableCheck("Economy", GID):
+        if sql.tableCheck("devolution_economy", GID):
             return True
 
     def get_balance(self, GID, UID):
         GID = str(GID)
         UID = str(UID)
         if self.account_check(GID, UID):
-            balance = str(sql.Fetch("balance", "Economy", str(GID), "USERID", str(UID)))
+            balance = str(sql.Fetch("balance", "devolution_economy", str(GID), "USERID", str(UID)))
             return balance.replace(",", " ")
 
     def create_account(self, GID, user):
         GID = str(GID)
         UID = (user.id)
         if not self.account_check(GID, UID):
-            mydb = sql.createConnection("Economy")
+            mydb = sql.createConnection("devolution_economy")
             cur = mydb.cursor()
-            cur.execute(f"INSERT into `Economy`.`{GID}` VALUES ('{user.id}', '{user.name}', 100)")
+            cur.execute(f"INSERT into `devolution_economy`.`{GID}` VALUES ('{user.id}', '{user.name}', 100)")
             mydb.commit()
             self.log(f"Bank Account Created for {UID} in {GID}")
             return True
@@ -463,9 +463,9 @@ class Economy(commands.Cog):
         if self.account_check(GID, UID):
             bal = self.get_balance(GID, UID)
             nbal = int(bal) + int(amount)
-            mydb = sql.createConnection("Economy")
+            mydb = sql.createConnection("devolution_economy")
             cur = mydb.cursor()
-            cur.execute(f"UPDATE `Economy`.`{GID}` SET balance = {nbal} WHERE USERID = {UID}")
+            cur.execute(f"UPDATE `devolution_economy`.`{GID}` SET balance = {nbal} WHERE USERID = {UID}")
             self.log(f"Bank Balance Updated for {UID} in {GID}: {bal} -> {nbal}")
             mydb.commit()
         else:
@@ -476,9 +476,9 @@ class Economy(commands.Cog):
         if self.enough_money(GID, UID, amount):
             bal = self.get_balance(GID, UID)
             nbal = int(bal) - int(amount)
-            mydb = sql.createConnection("Economy")
+            mydb = sql.createConnection("devolution_economy")
             cur = mydb.cursor()
-            cur.execute(f"UPDATE `Economy`.`{GID}` SET balance = {nbal} WHERE USERID = {UID}")
+            cur.execute(f"UPDATE `devolution_economy`.`{GID}` SET balance = {nbal} WHERE USERID = {UID}")
             self.log(f"Bank Balance Updated for {UID} in {GID}: {bal} -> {nbal}")
             mydb.commit()
         else:
