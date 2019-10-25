@@ -2,3 +2,4 @@
 *.webm
 *.pyc
 *.log
+utils/config.json

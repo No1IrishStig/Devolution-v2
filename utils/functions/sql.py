@@ -11,7 +11,8 @@ def createConnection(db):
         host=config.mysql_host,
         user=config.mysql_user,
         passwd=config.mysql_pass,
-        database=db
+        database=db,
+        port=config.mysql_port
     )
     return mydb
 
@@ -22,6 +23,7 @@ def Init():
         host=config.mysql_host,
         user=config.mysql_user,
         passwd=config.mysql_pass,
+        port=config.mysql_port
     )
     mycursor = mydb.cursor(buffered=True)
     for db in db_list:
@@ -38,6 +40,7 @@ def db_check(db):
         host=config.mysql_host,
         user=config.mysql_user,
         passwd=config.mysql_pass,
+        port=config.mysql_port
     )
     mycursor = mydb.cursor(buffered=True)
 
