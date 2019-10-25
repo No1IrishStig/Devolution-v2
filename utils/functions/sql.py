@@ -18,7 +18,7 @@ def createConnection(db):
 
 def Init():
     rows = []
-    db_list = ["devolution", "devolution_economy", "devolution_economy", "devolution_leveling"]
+    db_list = ["devolution", "devolution_economy", "devolution_warnings", "devolution_leveling"]
     mydb = mysql.connector.connect(
         host=config.mysql_host,
         user=config.mysql_user,
