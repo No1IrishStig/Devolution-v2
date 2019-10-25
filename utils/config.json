@@ -1,0 +1,13 @@
+{
+  "token": "Token",
+  "admins": [0],
+  "prefix": "!",
+  "admin_prefix": "/",
+  "playing": "Stable v2",
+  "deltimer": "20",
+
+  "mysql_host": "IP",
+  "mysql_user": "User",
+  "mysql_pass": "Password",
+  "mysql_db" : "USER_DB"
+}
