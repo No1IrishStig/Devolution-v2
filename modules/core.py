@@ -28,100 +28,30 @@ class Core(commands.Cog):
         with open("./data/settings/nsfw.json") as f:
             self.settings = json.load(f)
 
-    @commands.Cog.listener(name="on_reaction_add")
-    async def reaction_add_(self, reaction, user):
-        global page_num
-        emojis1 = ['◀', '▶', '🇽', '🇵']
-        if not user.bot:
-            if str(reaction.emoji in emojis1):
-
-                if str(reaction.emoji) == '🇽':
-                    try:
-                        await help.delete()
-                        page_num = None
-                    except Exception as e:
-                        return
-
-                elif str(reaction.emoji) == '◀':
-                    if page_num > 0:
-                        await help.add_reaction("◀")
-                        page_num -= 1
-                        await reaction.remove(user)
-                        if page_num == 0:
-                            try:
-                                await reaction.remove(self.bot.user)
-                                await reaction.remove(user)
-                            except Exception as e:
-                                return
-                    else:
-                        try:
-                            await reaction.remove(self.bot.user)
-                            await reaction.remove(user)
-                        except Exception as e:
-                            return
-
-                elif str(reaction.emoji) == '▶':
-                    if page_num <= 5:
-                        page_num += 1
-                        await reaction.remove(user)
-                        await help.add_reaction("◀")
-                    else:
-                        try:
-                            await reaction.remove(self.bot.user)
-                            await reaction.remove(user)
-                        except Exception as e:
-                            return
-
-                elif str(reaction.emoji) == '🇵':
-                    await user.send(embed=lib.Editable("Permission Requirements", "Manage Roles\nManage Channels\nKick Members\n Ban Members\nManage Nicknames\nRead Channels\nSend Messages\nManage Messages\nAdd Reactions\nConnect\nSpeak", "Help"))
-                    await reaction.remove(user)
-
-                if page_num == 0:
-                    e = lib.Editable("Devolution - Help", "**Page 0** - This Page\n**Page 1** - Information\n**Page 2** - Fun\n**Page 3** - Useful\n**Page 4** - Moderation\n**Page 5** - Admin\n**Permission Help (P)** - DM's Required Permissions", "Help Index")
-                    await help.edit(embed=e)
-
-                elif page_num == 1:
-                    e = lib.Editable(f"Devolution Help", "**help** - Gives help!\n**about** - Displays stuff about the bot\n**info** - Displays more bot information.\n**sinfo** - Displays guild information.\n**uinfo** - Displays user information\n**uptime** - Displays the bots uptime\n**bug** - Use it to report bugs.\n**github** - Provides github link", "Information")
-                    await help.edit(embed=e)
-
-                elif page_num == 2:
-                    e = lib.Editable(f"Devolution Help", "**bank** - Gives usage details\n**coinflip** - Flip a coin\n**space** - Get live information about the ISS\n**colour** - Get a random colour\n**roll** - Roles a dice\n**insult** - Insult people you dislike!\n**boobs** - See some melons!\n**ass** - See some peaches!\n**gif** - Search up a gif on giphy by name\n**gifr** - Gives a random gif from giphy\n**owo** - Get random responses", "Fun Help")
-                    await help.edit(embed=e)
-
-                elif page_num == 3:
-                    e = lib.Editable("Devolution Help", "**say** - Speak as the bot\n**rename** - Change a users nickname\n**invite** - Sends a bot invite link\n**embed** - Creates an embed message\n**role** - Gives role options\n**math** - Gives usage details", "Useful Help")
-                    await help.edit(embed=e)
-
-                elif page_num == 4:
-                    e = lib.Editable("Devolution Help", "**kick**- Kick a mentioned user\n**ban** - Ban a mentioned user\n**hackban** - Allows you to ban a UserID\n**punish** - Gives usage details\n**clean** - Cleans the current channel of bot messages and commands\n**cleanup** - Gives usage details\n**logs** - Gives usage details\n**warn** - Gives usage details\n**move** - Gives usage details", "Moderation Help")
-                    await help.edit(embed=e)
-
-                elif page_num == 5:
-                    e = lib.Editable(f"Devolution Help", "**leave** - Makes the bot leave the guild\n**setpresence(sp)** - Change the playing status of the bot.\n**shutdown** - Sends the bot into a deep sleep ...\n**cog** - Displays list of Cog Options\n**pm** - PMs Target user as bot\n**pmid** - PMs target ID as bot\n**amiadmin** - Tells you if you're a bot admin'", "Admin Help")
-                    await help.edit(embed=e)
-
-            else:
-                return
-        else:
-            return
-
-    @commands.group(invoke_without_command=True)
+    @commands.group(invoke_without_command=True, no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def help(self, ctx):
-        global page_num
-        global help
+        author = ctx.author
+        embed = discord.Embed(
+            title = "Help",
+            colour = 0x9bf442,
+            timestamp=datetime.datetime.utcnow()
+            )
+        embed.set_footer(text="Devolution - Help", icon_url="https://i.imgur.com/BS6YRcT.jpg")
+        embed.add_field(name="Information", value="**help** - Gives help!\n**about** - Displays stuff about the bot\n**info** - Displays more bot information.\n**sinfo** - Displays guild information.\n**uinfo** - Displays user information\n**uptime** - Displays the bots uptime\n**bug** - Use it to report bugs.\n**github** - Provides github link", inline=False)
+        embed.add_field(name="Fun", value="**bank** - Gives usage details\n**coinflip** - Flip a coin\n**space** - Get live information about the ISS\n**colour** - Get a random colour\n**roll** - Roles a dice\n**insult** - Insult people you dislike!\n**boobs** - See some melons!\n**ass** - See some peaches!\n**gif** - Search up a gif on giphy by name\n**gifr** - Gives a random gif from giphy\n**owo** - Get random responses", inline=False)
+        embed.add_field(name="Economy", value="**bank**\n\n**register** - Creates a bank account at Devo Bank\n**balance** - Returns your balance\n**transfer** - Send credits to your friends\n**set** - Set the credits of an account\n**economyset** - Change economy values\n**slot** - Play the slot machine\n**blackjack** - Gives details on how to play (Updated Soon)", inline=False)
+        embed.add_field(name="Useful", value="**say** - Speak as the bot\n**rename** - Change a users nickname\n**invite** - Sends a bot invite link\n**embed** - Creates an embed message\n**role** - Gives role options\n**math** - Gives usage details", inline=False)
+        embed.add_field(name="Moderation", value="**kick**- Kick a mentioned user\n**ban** - Ban a mentioned user\n**hackban** - Allows you to ban a UserID\n**punish** - Gives usage details\n**clean** - Cleans the current channel of bot messages and commands\n**cleanup** - Gives usage details\n**logs** - Gives usage details\n**warn** - Gives usage details\n**move** - Gives usage details", inline=False)
+        embed.add_field(name="Admin", value="**leave** - Makes the bot leave the guild\n**setpresence(sp)** - Change the playing status of the bot.\n**shutdown** - Sends the bot into a deep sleep ...\n**cog** - Displays list of Cog Options\n**pm** - PMs Target user as bot\n**pmid** - PMs target ID as bot\n**amiadmin** - Tells you if you're a bot admin", inline=False)
+        await author.send(embed=embed)
+        await asyncio.sleep(10)
         await ctx.message.delete()
-        page_num = 0
-        help = await ctx.send(embed = lib.Editable("Devolution - Help", "**Page 0** - This Page\n**Page 1** - Information\n**Page 2** - Fun\n**Page 3** - Useful\n**Page 4** - Moderation\n**Page 5** - Admin\n**Permission Help (P)** - DM's Required Permissions", "Help Index"))
-        await help.add_reaction("🇽")
-        await help.add_reaction("▶")
-        await help.add_reaction("🇵")
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def invite(self, ctx):
         user = ctx.author
-        await ctx.message.add_reaction("📄")
         await user.send(f"Heres the link to invite me to your guilds!\n\nhttps://discordapp.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=8")
         await asyncio.sleep(10)
         await ctx.message.delete()

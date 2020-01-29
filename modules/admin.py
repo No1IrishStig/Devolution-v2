@@ -1,4 +1,5 @@
 import discord
+import json
 import os
 
 from utils.functions import func
@@ -13,7 +14,7 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.group(invoke_without_command=True)
-    @commands.check(check.is_admin)
+    @commands.check(checks.is_owner)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def cog(self, ctx):
         usage = await ctx.send(embed=lib.Editable_E("Invalid Arguments", "Options:\n\n**load** - loads named cog.\n **unload** - Unloads named cog.\n **list** - Lists all cogs.", "Cog Usage"))
@@ -170,9 +171,6 @@ class Admin(commands.Cog):
     async def guilds(self, ctx):
         guild = self.bot.guilds
         await ctx.author.send(embed=lib.Editable(f"Guild Count {len(self.bot.guilds)}", "{}".format(*guild.id, sep='\n'), "Guilds"))
-
-
-
 
 
 def setup(bot):

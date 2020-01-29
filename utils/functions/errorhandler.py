@@ -26,7 +26,7 @@ class ErrorHandler(commands.Cog):
                 return
 
         elif isinstance(error, commands.CommandOnCooldown):
-            return await ctx.send(embed=lib.Editable_E(f"Calm down, {ctx.author.mention} that command is cooling down.", "", "Error"))
+            return await ctx.send(embed=lib.Editable_E(f"Calm down {ctx.author.name}, that command is cooling down.", "", "Error"))
 
         # Discord Error's
         elif isinstance(error, discord.Forbidden):

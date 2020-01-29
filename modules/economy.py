@@ -121,7 +121,7 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def add(self, ctx, user: discord.Member=None, amount : int=None):
         GID = str(ctx.guild.id)
-        if ctx.author is ctx.guild.owner or ctx.author.id in self.config.owner or ctx.author.id in self.config.admins:
+        if ctx.author is ctx.guild.owner or ctx.author.id in self.config.admins:
             if user and amount:
                 if self.account_check(GID, user.id):
                     if self.account_check(GID, ctx.author.id):

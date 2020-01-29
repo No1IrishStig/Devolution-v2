@@ -108,8 +108,9 @@ class Moderation(commands.Cog):
     async def punish(self, ctx, member: discord.Member=None, time:int=None):
         if member:
             role = discord.utils.get(member.guild.roles, name="punished")
-            if role in ctx.guild.roles:
-                if not role in member.roles:
+            if member.top_role < ctx.author.top_role:
+                if role in ctx.guild.roles:
+                    if not role in member.roles:
                         punished_users.append(member.id)
                         if time:
                             await member.send(embed=lib.Editable("Punished!", f"You were punished from '{ctx.guild.name}' by {ctx.author.name} for {time} seconds", "Moderation"))
@@ -124,11 +125,14 @@ class Moderation(commands.Cog):
                             s2 = await ctx.send(embed=lib.Editable_S(f"{member.name} Unpunished", f"{ctx.author.name} punished {member.mention}", "Moderation"))
                             await member.add_roles(role)
                             await lib.erase(ctx, s2)
+                    else:
+                        e1 = await ctx.send(embed=lib.Editable_E("User is already punished", "", "Error"))
+                        await lib.erase(ctx, e1)
                 else:
-                    e1 = await ctx.send(embed=lib.Editable_E("User is already punished", "", "Error"))
-                    await lib.erase(ctx, e1)
+                    await self.punish_create(ctx)
             else:
-                await self.punish_create(ctx)
+                e2 = await ctx.send(embed=lib.Editable_E("You cannot punish that user.", "", "Error"))
+                await lib.erase(ctx, e2)
         else:
             e2 = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}punish @someone (time)\n\nOptional Arguments: Time (Seconds)", "Usage"))
             await lib.erase(ctx, e2)
@@ -719,7 +723,7 @@ class Moderation(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         try:
-            GID = str(after.guild.id)
+            GID = str(after.id)
         except error as e:
             return
         if GID in self.logs:
@@ -810,7 +814,7 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_update(self, before, after):
-        GID = str(after.guild.id)
+        GID = str(after.id)
         if GID in self.logs:
             if self.logs[GID]['server'] == True:
                 channel = self.logs[GID]["Channel"]
@@ -850,7 +854,7 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        GID = str(after.guild.id)
+        GID = str(after.id)
         if GID in self.logs:
             if self.logs[GID]['user'] == True:
                 channel = self.logs[GID]["Channel"]
@@ -959,7 +963,7 @@ class Moderation(commands.Cog):
         GID = str(GID)
         UID = (user.id)
         if not self.user_exists(UID, GID):
-            mydb = sql.createConnection("Economy")
+            mydb = sql.createConnection("devolution_warnings")
             cur = mydb.cursor()
             cur.execute(f"INSERT into `devolution_warnings`.`{GID}` VALUES ('{user.id}', '{user.name}', 0)")
             mydb.commit()
