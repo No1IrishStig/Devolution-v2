@@ -37,21 +37,17 @@ class Moderation(commands.Cog):
             if user:
                 reason = ' '.join(args)
                 if reason == "":
-                    await user.send(embed=lib.Editable("You were kicked", f"You were kicked from '{ctx.guild.name}' by {ctx.author}", "Moderation"))
-                    s = await ctx.send(embed=lib.Editable_S("Success", f"User has been kicked by {ctx.author.name}", "Moderation"))
+                    await user.send(embed=lib.Editable("You were kicked", f"You were kicked from '{ctx.guild.name}' by {ctx.author}", "Moderation"), delete_after=config.deltimer)
+                    await ctx.send(embed=lib.Editable_S("Success", f"User has been kicked by {ctx.author.name}", "Moderation"), delete_after=config.deltimer)
                     await ctx.guild.kick(user)
-                    await lib.erase(ctx, s)
                 else:
-                    await user.send(embed=lib.Editable("You were kicked", f"You were kicked from '{ctx.guild.name}' by {ctx.author} for '{reason}'", "Moderation"))
-                    s1 = await ctx.send(embed=lib.Editable_S("Success", f"User has been kicked by {ctx.author.name} for '{reason}'", "Moderation"))
+                    await user.send(embed=lib.Editable("You were kicked", f"You were kicked from '{ctx.guild.name}' by {ctx.author} for '{reason}'", "Moderation"), delete_after=config.deltimer)
+                    await ctx.send(embed=lib.Editable_S("Success", f"User has been kicked by {ctx.author.name} for '{reason}'", "Moderation"), delete_after=config.deltimer)
                     await ctx.guild.kick(user)
-                    await lib.erase(ctx, s1)
             else:
-                e = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}kick @someone @reason\n\nOptional Arguments:\nReason", "Usage"))
-                await lib.erase(ctx, e)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}kick @someone @reason\n\nOptional Arguments:\nReason", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.check(check.is_moderator)
@@ -61,21 +57,18 @@ class Moderation(commands.Cog):
             if user:
                 reason = ' '.join(args)
                 if reason == "":
-                    await user.send(embed=lib.Editable("You were banned", f"You were banned from '{ctx.guild.name}' by {ctx.author}", "Moderation"))
-                    s = await ctx.send(embed=lib.Editable_S("Success", f"User has been banned by {ctx.author.name}", "Moderation"))
+                    await user.send(embed=lib.Editable("You were banned", f"You were banned from '{ctx.guild.name}' by {ctx.author}", "Moderation"), delete_after=config.deltimer)
+                    await ctx.send(embed=lib.Editable_S("Success", f"User has been banned by {ctx.author.name}", "Moderation"), delete_after=config.deltimer)
                     await ctx.guild.ban(user)
-                    await lib.erase(ctx, s)
                 else:
-                    await user.send(embed=lib.Editable("You were banned", f"You were banned from '{ctx.guild.name}' by {ctx.author} for '{reason}'", "Moderation"))
-                    s1 = await ctx.send(embed=lib.Editable_S("Success", f"User has been banned by {ctx.author.name} for '{reason}'", "Moderation"))
+                    await user.send(embed=lib.Editable("You were banned", f"You were banned from '{ctx.guild.name}' by {ctx.author} for '{reason}'", "Moderation"), delete_after=config.deltimer)
+                    await ctx.send(embed=lib.Editable_S("Success", f"User has been banned by {ctx.author.name} for '{reason}'", "Moderation"), delete_after=config.deltimer)
                     await ctx.guild.ban(user)
-                    await lib.erase(ctx, s1)
             else:
-                e = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}ban @someone @reason\n\nOptional Arguments:\nReason", "Usage"))
-                await lib.erase(ctx, e)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}ban @someone @reason\n\nOptional Arguments:\nReason", "Usage"), delete_after=config.deltimer)
+
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.eraset(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -85,22 +78,18 @@ class Moderation(commands.Cog):
                 reason = ' '.join(args)
                 if reason == "":
                     user = await self.bot.fetch_user(user_id)
-                    y = await ctx.send(embed=lib.Editable_S(f"{ctx.author.name} Just yeeted someone!", f"UserID '{user_id}' just got hackbanned!", "Moderation"))
-                    await user.send(embed=lib.Editable("You got hackbanned!", f"You got hack banned from '{ctx.guild.name}'", "Moderation"))
+                    y = await ctx.send(embed=lib.Editable_S(f"{ctx.author.name} Just yeeted someone!", f"UserID '{user_id}' just got hackbanned!", "Moderation"), delete_after=config.deltimer)
+                    await user.send(embed=lib.Editable("You got hackbanned!", f"You got hack banned from '{ctx.guild.name}'", "Moderation"), delete_after=config.deltimer)
                     await ctx.guild.ban(user)
-                    await lib.erase(ctx, y)
                 else:
                     user = await self.bot.fetch_user(user_id)
-                    y1 = await ctx.send(embed=lib.Editable_S(f"{ctx.author.name} Just yeeted someone!", f"UserID '{user_id}' just got hackbanned for {reason}!", "Moderation"))
-                    await user.send(embed=lib.Editable("You got hackbanned!", f"You got hack banned from '{ctx.guild.name}' for '{reason}'", "Moderation"))
+                    y1 = await ctx.send(embed=lib.Editable_S(f"{ctx.author.name} Just yeeted someone!", f"UserID '{user_id}' just got hackbanned for {reason}!", "Moderation"), delete_after=config.deltimer)
+                    await user.send(embed=lib.Editable("You got hackbanned!", f"You got hack banned from '{ctx.guild.name}' for '{reason}'", "Moderation"), delete_after=config.deltimer)
                     await ctx.guild.ban(user)
-                    await lib.erase(ctx, y1)
             else:
-                e = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}hackban @someone @reason\n\nOptional Arguments:\nReason", "Usage"))
-                await lib.erase(ctx, e)
+                e = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}hackban @someone @reason\n\nOptional Arguments:\nReason", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.eraset(ctx, p)
+            p = await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.check(check.is_moderator)
@@ -113,29 +102,25 @@ class Moderation(commands.Cog):
                     if not role in member.roles:
                         punished_users.append(member.id)
                         if time:
-                            await member.send(embed=lib.Editable("Punished!", f"You were punished from '{ctx.guild.name}' by {ctx.author.name} for {time} seconds", "Moderation"))
-                            s1 = await ctx.send(embed=lib.Editable_S(f"{member.name} Punished", f"{ctx.author.mention} punished {member.mention} for {time} seconds.", "Moderation"))
+                            await member.send(embed=lib.Editable("Punished!", f"You were punished from '{ctx.guild.name}' by {ctx.author.name} for {time} seconds", "Moderation"), delete_after=config.deltimer)
+                            s1 = await ctx.send(embed=lib.Editable_S(f"{member.name} Punished", f"{ctx.author.mention} punished {member.mention} for {time} seconds.", "Moderation"), delete_after=config.deltimer)
                             await member.add_roles(role)
                             await asyncio.sleep(time)
                             await member.remove_roles(role)
                             if member.id in punished_users:
-                                await member.send(embed=lib.Editable("Punished!", f"Your punishment in '{ctx.guild.name}' has expired", "Moderation"))
+                                await member.send(embed=lib.Editable("Punished!", f"Your punishment in '{ctx.guild.name}' has expired", "Moderation"), delete_after=config.deltimer)
                         else:
-                            await member.send(embed=lib.Editable("Punished!", f"You were punished from '{ctx.guild.name}' by {ctx.author.name}", "Moderation"))
-                            s2 = await ctx.send(embed=lib.Editable_S(f"{member.name} Unpunished", f"{ctx.author.name} punished {member.mention}", "Moderation"))
+                            await member.send(embed=lib.Editable("Punished!", f"You were punished from '{ctx.guild.name}' by {ctx.author.name}", "Moderation"), delete_after=config.deltimer)
+                            await ctx.send(embed=lib.Editable_S(f"{member.name} Unpunished", f"{ctx.author.name} punished {member.mention}", "Moderation"), delete_after=config.deltimer)
                             await member.add_roles(role)
-                            await lib.erase(ctx, s2)
                     else:
-                        e1 = await ctx.send(embed=lib.Editable_E("User is already punished", "", "Error"))
-                        await lib.erase(ctx, e1)
+                        await ctx.send(embed=lib.Editable_E("User is already punished", "", "Error"), delete_after=config.deltimer)
                 else:
                     await self.punish_create(ctx)
             else:
-                e2 = await ctx.send(embed=lib.Editable_E("You cannot punish that user.", "", "Error"))
-                await lib.erase(ctx, e2)
+                await ctx.send(embed=lib.Editable_E("You cannot punish that user.", "", "Error"), delete_after=config.deltimer)
         else:
-            e2 = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}punish @someone (time)\n\nOptional Arguments: Time (Seconds)", "Usage"))
-            await lib.erase(ctx, e2)
+            await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}punish @someone (time)\n\nOptional Arguments: Time (Seconds)", "Usage"), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.check(check.is_moderator)
@@ -146,18 +131,15 @@ class Moderation(commands.Cog):
             if role in ctx.guild.roles:
                 if role in member.roles:
                     await member.send(embed=lib.Editable("Unpunished!", f"You were unpunished from '{ctx.guild.name}' by {ctx.author.name}", "Moderation"))
-                    s = await ctx.send(embed=lib.Editable_S(f"{member.name} Unpunished", f"{ctx.author.name} unpunished {member.mention}", "Moderation"))
+                    await ctx.send(embed=lib.Editable_S(f"{member.name} Unpunished", f"{ctx.author.name} unpunished {member.mention}", "Moderation"), delete_after=config.deltimer)
                     await member.remove_roles(role)
                     punished_users.remove(member.id)
-                    await lib.erase(ctx, s)
                 else:
-                    e = await ctx.send(embed=lib.Editable_E("User is not punished", "", "Error"))
-                    await lib.erase(ctx, e)
+                    await ctx.send(embed=lib.Editable_E("User is not punished", "", "Error"), delete_after=config.deltimer)
             else:
                 await self.punish_create(ctx)
         else:
-            u = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}unpunish @someone", "Usage"))
-            await lib.erase(ctx, u)
+            await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}unpunish @someone", "Usage"), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.check(check.is_moderator)
@@ -167,7 +149,7 @@ class Moderation(commands.Cog):
         for id in punished_users:
             user = await self.bot.fetch_user(id)
             users.append(user.name)
-        await ctx.send(embed=lib.Editable("Punished List", "{}".format("\n ".join(users)), "Moderation"))
+        await ctx.send(embed=lib.Editable("Punished List", "{}".format("\n ".join(users)), "Moderation"), delete_after=30)
 
     @commands.command()
     @commands.check(check.is_moderator)
@@ -201,13 +183,11 @@ class Moderation(commands.Cog):
             name = ' '.join(args)
             if member and not name is "":
                 await member.edit(nick=name)
-                await ctx.send(embed=lib.Editable_S(f"{member.name} was renamed to '{member.name}'", "", "Moderation"))
+                await ctx.send(embed=lib.Editable_S(f"{member.name} was renamed to '{member.name}'", "", "Moderation"), delete_after=config.deltimer)
             else:
-                e1 = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}rename @someone (nickname)", "Usage"))
-                await lib.erase(ctx, e1)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}rename @someone (nickname)", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.check(check.is_moderator)
@@ -247,8 +227,7 @@ class Moderation(commands.Cog):
     @commands.check(check.is_moderator)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cleanup(self, ctx):
-        u = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}cleanup after\n{ctx.prefix}cleanup messages\n{ctx.prefix}cleanup user", "Usage"))
-        await lib.erase(ctx, u)
+        await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}cleanup after\n{ctx.prefix}cleanup messages\n{ctx.prefix}cleanup user", "Usage"), delete_after=config.deltimer)
 
     @cleanup.group(invoke_without_command=True, no_pm=True)
     @commands.check(check.is_moderator)
@@ -261,8 +240,7 @@ class Moderation(commands.Cog):
                 to_delete.append(message)
             await ctx.channel.delete_messages(to_delete)
         else:
-            e = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}cleanup after (ID)", "Usage"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}cleanup after (ID)", "Usage"), delete_after=config.deltimer)
 
     @cleanup.group(invoke_without_command=True, no_pm=True)
     @commands.check(check.is_moderator)
@@ -270,13 +248,12 @@ class Moderation(commands.Cog):
     async def messages(self, ctx, num:int=None):
         if ctx.author.guild_permissions.manage_messages:
             if num is None:
-                e = await ctx.send(embed=lib.Editable("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}cleanup messages (amount)", "Usage"))
-                await lib.erase(ctx, e)
+                await ctx.send(embed=lib.Editable("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}cleanup messages (amount)", "Usage"), delete_after=config.deltimer)
             else:
                 await ctx.channel.purge(limit=num + 1)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
+
 
     @cleanup.group(invoke_without_command=True, no_pm=True)
     @commands.check(check.is_moderator)
@@ -303,14 +280,12 @@ class Moderation(commands.Cog):
                 tries_left -= 1
                 await ctx.channel.delete_messages(to_delete)
         else:
-            e1 = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}cleanup user (@user) (amount)", "Usage"))
-            await lib.erase(ctx, e1)
+            await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}cleanup user (@user) (amount)", "Usage"), delete_after=config.deltimer)
 
     @commands.group(invoke_without_command=True)
     @commands.check(check.is_moderator)
     async def move(self, ctx):
-        usage = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}move count\n{ctx.prefix}move all\n{ctx.prefix}move role\n{ctx.prefix}move channel #voicechannel", "Usage"))
-        await lib.erase(ctx, usage)
+        await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}move count\n{ctx.prefix}move all\n{ctx.prefix}move role\n{ctx.prefix}move channel #voicechannel", "Usage"), delete_after=config.deltimer)
 
     @move.group()
     @commands.check(check.is_moderator)
@@ -319,10 +294,9 @@ class Moderation(commands.Cog):
             list_of_channels = ctx.guild.voice_channels
             for voice_channels in list_of_channels:
                 if len(voice_channels.members) > 0:
-                    await ctx.send(embed=lib.Editable_S(f"Found {len(voice_channels.members)} Member(s) in '{voice_channels.name}'", "", "Voice Moderation"))
+                    await ctx.send(embed=lib.Editable_S(f"Found {len(voice_channels.members)} Member(s) in '{voice_channels.name}'", "", "Voice Moderation"), delete_after=config.deltimer)
         else:
-            e = await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"), delete_after=config.deltimer)
 
     @move.group()
     @commands.check(check.is_moderator)
@@ -343,12 +317,10 @@ class Moderation(commands.Cog):
                         userlist.append(members.name)
                     else:
                         membercount -= 1
-            moved = await ctx.send(embed=lib.Editable("Fetching Users...", "Found {} Users in {} Voice Channels. Moved them to '{}' under the command of {}".format(membercount, channel_count, move_to, ctx.author.name), "Voice Moderation"))
+            await ctx.send(embed=lib.Editable("Fetching Users...", "Found {} Users in {} Voice Channels. Moved them to '{}' under the command of {}".format(membercount, channel_count, move_to, ctx.author.name), "Voice Moderation"), delete_after=config.deltimer)
             membercount = 0
-            await lib.erase(ctx, moved)
         else:
-            e = await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"), delete_after=config.deltimer)
 
     @move.group(name="role")
     @commands.check(check.is_moderator)
@@ -366,15 +338,12 @@ class Moderation(commands.Cog):
                                 if role in members.roles:
                                     membercount += 1
                                     await members.move_to(move_to)
-                cal = await ctx.send(embed=lib.Editable("Fetching Users...", "Found {} Users with the role '{}'. Moved them to '{}' under the command of {}".format(membercount, rolename, move_to, ctx.author.name), "Voice Moderation"))
+                await ctx.send(embed=lib.Editable("Fetching Users...", "Found {} Users with the role '{}'. Moved them to '{}' under the command of {}".format(membercount, rolename, move_to, ctx.author.name), "Voice Moderation"), delete_after=config.deltimer)
                 membercount = 0
-                await lib.erase(ctx, cal)
             else:
-                e = await ctx.send(embed=lib.Editable_E("Invalid Role", "", "Error"))
-                await lib.erase(ctx, e)
+                await ctx.send(embed=lib.Editable_E("Invalid Role", "", "Error"), delete_after=config.deltimer)
         else:
-            e1 = await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"))
-            await lib.erase(ctx, e1)
+            await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"), delete_after=config.deltimer)
 
     @move.group(name="channel")
     @commands.check(check.is_moderator)
@@ -390,24 +359,21 @@ class Moderation(commands.Cog):
                             if members.bot is False:
                                 membercount += len(channels.members)
                                 await members.move_to(move_to)
-                await ctx.send(embed=lib.Editable("Fetching Users...", "Found **{}** Users in channel **{}**. Moved them to {} under the command of **{}**".format(membercount, channelname, move_to, ctx.author.name), "Voice Moderation"))
+                await ctx.send(embed=lib.Editable("Fetching Users...", "Found **{}** Users in channel **{}**. Moved them to {} under the command of **{}**".format(membercount, channelname, move_to, ctx.author.name), "Voice Moderation"), delete_after=config.deltimer)
                 membercount = 0
             else:
-                e1 = await ctx.send(embed=lib.Editable_E("Invalid Channel", f"Usage Example:\n\n{ctx.prefix}move channel (channelname)", "Usage"))
-                await lib.erase(ctx, e1)
+                await ctx.send(embed=lib.Editable_E("Invalid Channel", f"Usage Example:\n\n{ctx.prefix}move channel (channelname)", "Usage"), delete_after=config.deltimer)
         else:
-            e1 = await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"))
-            await lib.erase(ctx, e1)
+            await ctx.send(embed=lib.Editable_E("Join a voice channel", f"", "Error"), delete_after=config.deltimer)
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def role(self, ctx):
         if ctx.author.guild_permissions.manage_roles or ctx.author.id in config.admins:
-            u = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}role add\n{ctx.prefix}role list\n{ctx.prefix}role remove\n{ctx.prefix}role create", "Usage"))
-            await lib.erase(ctx, u)
+            await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}role add\n{ctx.prefix}role list\n{ctx.prefix}role remove\n{ctx.prefix}role create", "Usage"), delete_after=config.deltimer)
+
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @role.group(invoke_without_command=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -417,11 +383,9 @@ class Moderation(commands.Cog):
             for role in ctx.guild.roles:
                 roles.append(role.name)
             roles.remove("@everyone")
-            l = await ctx.send(embed=lib.Editable("Role List", "{}".format("\n".join(roles)), "Roles"))
-            await lib.erase(ctx, l)
+            await ctx.send(embed=lib.Editable("Role List", "{}".format("\n".join(roles)), "Roles"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @role.group(invoke_without_command=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -432,20 +396,16 @@ class Moderation(commands.Cog):
                 if role in ctx.guild.roles:
                     if not role in member.roles:
                         await member.add_roles(role)
-                        d = await ctx.send(embed=lib.Editable_S("Role Added", f"The role '{role}' was added to {member.mention}", "Roles"))
-                        await lib.erase(ctx, d)
+                        await ctx.send(embed=lib.Editable_S("Role Added", f"The role '{role}' was added to {member.mention}", "Roles"), delete_after=config.deltimer)
                     else:
-                        e = await ctx.send(embed=lib.Editable_E(f"{member.name} already has that role", "", "Error"))
-                        await lib.erase(ctx, e)
+                        await ctx.send(embed=lib.Editable_E(f"{member.name} already has that role", "", "Error"), delete_after=config.deltimer)
                 else:
-                    e = await ctx.send(embed=lib.Editable_E("Invalid Role", "", "Error"))
-                    await lib.erase(ctx, e)
+                    await ctx.send(embed=lib.Editable_E("Invalid Role", "", "Error"), delete_after=config.deltimer)
             else:
-                u = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role add @someone (role)", "Usage"))
-                await lib.erase(ctx, u)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role add @someone (role)", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
+
 
     @role.group(invoke_without_command=True, no_pm=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -456,20 +416,15 @@ class Moderation(commands.Cog):
                 if role in ctx.guild.roles:
                     if role in member.roles:
                         await member.remove_roles(role)
-                        d = await ctx.send(embed=lib.Editable_S("Role Removed", f"The role '{role}' was removed from {member.name}", "Roles"))
-                        await lib.erase(ctx, d)
+                        await ctx.send(embed=lib.Editable_S("Role Removed", f"The role '{role}' was removed from {member.name}", "Roles"), delete_after=config.deltimer)
                     else:
-                        e = await ctx.send(embed=lib.Editable_E(f"{member.name} does not have that role", "", "Error"))
-                        await lib.erase(ctx, e)
+                        await ctx.send(embed=lib.Editable_E(f"{member.name} does not have that role", "", "Error"), delete_after=config.deltimer)
                 else:
-                    e = await ctx.send(embed=lib.Editable_E("Invalid Role", "", "Error"))
-                    await lib.erase(ctx, e)
+                    await ctx.send(embed=lib.Editable_E("Invalid Role", "", "Error"), delete_after=config.deltimer)
             else:
-                u = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role remove @someone (role)", "Usage"))
-                await lib.erase(ctx, u)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role remove @someone (role)", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @role.group(invoke_without_command=True, no_pm=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -479,17 +434,13 @@ class Moderation(commands.Cog):
                 role = discord.utils.get(ctx.message.guild.roles, name=rolename)
                 if not role in ctx.message.guild.roles:
                     await ctx.guild.create_role(name=rolename)
-                    d = await ctx.send(embed=lib.Editable_S("Role Created", f"The role '{rolename}' has been created.", "Roles"))
-                    await lib.erase(ctx, d)
+                    await ctx.send(embed=lib.Editable_S("Role Created", f"The role '{rolename}' has been created.", "Roles"), delete_after=config.deltimer)
                 else:
-                    e = await ctx.send(embed=lib.Editable_E("That role already exists", "", "Error"))
-                    await lib.erase(ctx, e)
+                    await ctx.send(embed=lib.Editable_E("That role already exists", "", "Error"), delete_after=config.deltimer)
             else:
-                u = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role create (role)", "Usage"))
-                await lib.erase(ctx, u)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role create (role)", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @role.group(invoke_without_command=True, no_pm=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -499,17 +450,13 @@ class Moderation(commands.Cog):
                 role = discord.utils.get(ctx.message.guild.roles, name=rolename)
                 if role in ctx.message.guild.roles:
                     await role.delete()
-                    d = await ctx.send(embed=lib.Editable_S(f"Role {rolename} was deleted", "", "Roles"))
-                    await lib.erase(ctx, d)
+                    await ctx.send(embed=lib.Editable_S(f"Role {rolename} was deleted", "", "Roles"), delete_after=config.deltimer)
                 else:
-                    e = await ctx.send(embed=lib.Editable_E("That role doesnt exist", "", "Error"))
-                    await lib.erase(ctx, e)
+                    await ctx.send(embed=lib.Editable_E("That role doesnt exist", "", "Error"), delete_after=config.deltimer)
             else:
-                u = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role delete (role)", "Usage"))
-                await lib.erase(ctx, u)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}role delete (role)", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
 # Logs Start -------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -518,14 +465,13 @@ class Moderation(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def logs(self, ctx):
         GID = str(ctx.guild.id)
-        e = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}logs set channel\n{ctx.prefix}logs toggle\n{ctx.prefix}logs toggle all", "Logs"))
+        await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}logs set channel\n{ctx.prefix}logs toggle\n{ctx.prefix}logs toggle all", "Logs"), delete_after=config.deltimer)
 
     @logs.group(invoke_without_command=True, no_pm=True)
     @commands.check(check.is_moderator)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def set(self, ctx):
-        e = await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}logs set channel\n{ctx.prefix}logs toggle\n{ctx.prefix}logs toggle all", "Logs"))
-        await lib.erase(ctx, e)
+        await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}logs set channel\n{ctx.prefix}logs toggle\n{ctx.prefix}logs toggle all", "Logs"), delete_after=config.deltimer)
 
     @set.group(name="channel", invoke_without_command=True)
     @commands.check(check.is_moderator)
@@ -536,9 +482,9 @@ class Moderation(commands.Cog):
             self.logs[GID]["Channel"] = ctx.channel.id
             with open("./data/settings/logs.json", "w") as f:
                 json.dump(self.logs, f)
-                await ctx.send(embed=lib.Editable_S(f"Channel set to {ctx.channel.name}", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S(f"Channel set to {ctx.channel.name}", "", "Logs"), delete_after=config.deltimer)
         else:
-            await ctx.send(embed=lib.Editable_E("Please enable The logs first", f"{ctx.prefix}logs enable", "Error"))
+            await ctx.send(embed=lib.Editable_E("Please enable The logs first", f"{ctx.prefix}logs enable", "Error"), delete_after=config.deltimer)
 
     @logs.group(invoke_without_command=True, no_pm=True)
     @commands.check(check.is_moderator)
@@ -565,12 +511,12 @@ class Moderation(commands.Cog):
                 self.logs[GID]["Channel"] = ctx.channel.id
                 with open("./data/settings/logs.json", "w") as f:
                     json.dump(self.logs, f)
-                    await ctx.send(embed=lib.Editable_S("Logs are now enabled", "", "Logs"))
+                    await ctx.send(embed=lib.Editable_S("Logs are now enabled", "", "Logs"), delete_after=config.deltimer)
             else:
                 del self.logs[GID]
                 with open("./data/settings/logs.json", "w") as f:
                     json.dump(self.logs, f)
-                    await ctx.send(embed=lib.Editable_S("Logs are now disabled", "", "Logs"))
+                    await ctx.send(embed=lib.Editable_S("Logs are now disabled", "", "Logs"), delete_after=config.deltimer)
 
     @toggle.group(invoke_without_command=True)
     @commands.check(check.is_moderator)
@@ -581,12 +527,12 @@ class Moderation(commands.Cog):
             self.logs[GID]["delete"] = True
             with open("./data/settings/logs.json", "w") as f:
                 json.dump(self.logs, f)
-                await ctx.send(embed=lib.Editable_S("Delete logs are now enabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Delete logs are now enabled", "", "Logs"), delete_after=config.deltimer)
         elif self.logs[GID]["delete"] == True:
             self.logs[GID]["delete"] = False
             with open("./data/settings/logs.json", "w") as e:
                 json.dump(self.logs, e)
-                await ctx.send(embed=lib.Editable_S("Delete logs are now disabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Delete logs are now disabled", "", "Logs"), delete_after=config.deltimer)
 
     @toggle.group(invoke_without_command=True)
     @commands.check(check.is_moderator)
@@ -597,12 +543,12 @@ class Moderation(commands.Cog):
             self.logs[GID]["edit"] = True
             with open("./data/settings/logs.json", "w") as f:
                 json.dump(self.logs, f)
-                await ctx.send(embed=lib.Editable_S("Edit logs are now enabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Edit logs are now enabled", "", "Logs"), delete_after=config.deltimer)
         elif self.logs[GID]["edit"] == True:
             self.logs[GID]["edit"] = False
             with open("./data/settings/logs.json", "w") as e:
                 json.dump(self.logs, e)
-                await ctx.send(embed=lib.Editable_S("Edit logs are now disabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Edit logs are now disabled", "", "Logs"), delete_after=config.deltimer)
 
     @toggle.group(invoke_without_command=True)
     @commands.check(check.is_moderator)
@@ -613,12 +559,12 @@ class Moderation(commands.Cog):
             self.logs[GID]["user"] = True
             with open("./data/settings/logs.json", "w") as f:
                 json.dump(self.logs, f)
-                await ctx.send(embed=lib.Editable_S("User logs are now enabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("User logs are now enabled", "", "Logs"), delete_after=config.deltimer)
         elif self.logs[GID]["user"] == True:
             self.logs[GID]["user"] = False
             with open("./data/settings/logs.json", "w") as e:
                 json.dump(self.logs, e)
-                await ctx.send(embed=lib.Editable_S("User logs are now disabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("User logs are now disabled", "", "Logs"), delete_after=config.deltimer)
 
     @toggle.group(invoke_without_command=True)
     @commands.check(check.is_moderator)
@@ -629,12 +575,12 @@ class Moderation(commands.Cog):
             self.logs[GID]["join"] = True
             with open("./data/settings/logs.json", "w") as f:
                 json.dump(self.logs, f)
-                await ctx.send(embed=lib.Editable_S("Join logs are now enabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Join logs are now enabled", "", "Logs"), delete_after=config.deltimer)
         elif self.logs[GID]["join"] == True:
             self.logs[GID]["join"] = False
             with open("./data/settings/logs.json", "w") as e:
                 json.dump(self.logs, e)
-                await ctx.send(embed=lib.Editable_S("Join logs are now disabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Join logs are now disabled", "", "Logs"), delete_after=config.deltimer)
 
     @toggle.group(invoke_without_command=True)
     @commands.check(check.is_moderator)
@@ -645,12 +591,12 @@ class Moderation(commands.Cog):
             self.logs[GID]["leave"] = True
             with open("./data/settings/logs.json", "w") as f:
                 json.dump(self.logs, f)
-                await ctx.send(embed=lib.Editable_S("Leave logs are now enabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Leave logs are now enabled", "", "Logs"), delete_after=config.deltimer)
         elif self.logs[GID]["leave"] == True:
             self.logs[GID]["leave"] = False
             with open("./data/settings/logs.json", "w") as e:
                 json.dump(self.logs, e)
-                await ctx.send(embed=lib.Editable_S("Leave logs are now disabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Leave logs are now disabled", "", "Logs"), delete_after=config.deltimer)
 
     @toggle.group(invoke_without_command=True)
     @commands.check(check.is_moderator)
@@ -661,12 +607,12 @@ class Moderation(commands.Cog):
             self.logs[GID]["server"] = True
             with open("./data/settings/logs.json", "w") as f:
                 json.dump(self.logs, f)
-                await ctx.send(embed=lib.Editable_S("Server logs are now enabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Server logs are now enabled", "", "Logs"), delete_after=config.deltimer)
         elif self.logs[GID]["server"] == True:
             self.logs[GID]["server"] = False
             with open("./data/settings/logs.json", "w") as e:
                 json.dump(self.logs, e)
-                await ctx.send(embed=lib.Editable_S("Server logs are now disabled", "", "Logs"))
+                await ctx.send(embed=lib.Editable_S("Server logs are now disabled", "", "Logs"), delete_after=config.deltimer)
 
     @toggle.group(invoke_without_command=True, name="all")
     @commands.check(check.is_moderator)
@@ -681,7 +627,7 @@ class Moderation(commands.Cog):
         self.logs[GID]["server"] = True
         with open("./data/settings/logs.json", "w") as f:
             json.dump(self.logs, f)
-            await ctx.send(embed=lib.Editable_S("All logs are now enabled", "", "Logs"))
+            await ctx.send(embed=lib.Editable_S("All logs are now enabled", "", "Logs"), delete_after=config.deltimer)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -891,16 +837,16 @@ class Moderation(commands.Cog):
                 if self.user_exists(UID, GID):
                     reason = ' '.join(args)
                     if reason == "":
-                        await ctx.send(embed=lib.Editable_S(f"{user.name} was warned", f"{user.mention} Recieved a warning from {ctx.author.name}", "Warnings"))
+                        await ctx.send(embed=lib.Editable_S(f"{user.name} was warned", f"{user.mention} Recieved a warning from {ctx.author.name}", "Warnings"), delete_after=config.deltimer)
                         self.add_warn(GID, UID)
                     else:
-                        await ctx.send(embed=lib.Editable_S(f"{user.name} was warned", f"{user.mention} Recieved a warning from {ctx.author.name} for {reason}", "Warnings"))
+                        await ctx.send(embed=lib.Editable_S(f"{user.name} was warned", f"{user.mention} Recieved a warning from {ctx.author.name} for {reason}", "Warnings"), delete_after=config.deltimer)
                         self.add_warn(GID, UID)
                 else:
                     self.create_record(GID, user)
                     await ctx.reinvoke()
             else:
-                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}warn @someone (reason)\n{ctx.prefix}warn get @someone\n{ctx.prefix}warn remove @someone (amount)", "Usage"))
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"{ctx.prefix}warn @someone (reason)\n{ctx.prefix}warn get @someone\n{ctx.prefix}warn remove @someone (amount)", "Usage"), delete_after=config.deltimer)
         else:
             self.warn_create(GID)
             await ctx.reinvoke()
@@ -913,13 +859,13 @@ class Moderation(commands.Cog):
             if user:
                 UID = str(user.id)
                 if self.user_exists(UID, GID):
-                    await ctx.send(embed=lib.Editable_S(f"{user.name} has {self.get_warns(GID, UID)}warning(s)", "", "Warnings"))
+                    await ctx.send(embed=lib.Editable_S(f"{user.name} has {self.get_warns(GID, UID)}warning(s)", "", "Warnings"), delete_after=config.deltimer)
                 else:
-                    await ctx.send(embed=lib.Editable_S(f"{user.name} has no warnings!", "", "Warnings"))
+                    await ctx.send(embed=lib.Editable_S(f"{user.name} has no warnings!", "", "Warnings"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}warn get @someone", "Usage"))
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}warn get @someone", "Usage"), delete_after=config.deltimer)
         else:
-            await ctx.send(embed=lib.Editable_E("Warnings arent enabled", f"Run {ctx.prefix}warn to begin", "Warnings"))
+            await ctx.send(embed=lib.Editable_E("Warnings arent enabled", f"Run {ctx.prefix}warn to begin", "Warnings"), delete_after=config.deltimer)
 
     @warn.group()
     @commands.check(check.is_moderator)
@@ -930,16 +876,16 @@ class Moderation(commands.Cog):
                 UID = str(user.id)
                 if self.user_exists(UID, GID):
                     if self.enough_warns(GID, UID, num):
-                        await ctx.send(embed=lib.Editable_E(f"Removed {num} warnings from {user.name}", "", "Usage"))
+                        await ctx.send(embed=lib.Editable_E(f"Removed {num} warnings from {user.name}", "", "Usage"), delete_after=config.deltimer)
                         self.del_warn(GID, UID, num)
                     else:
-                        await ctx.send(embed=lib.Editable_E("User does not have enough warnings", f"", "Error"))
+                        await ctx.send(embed=lib.Editable_E("User does not have enough warnings", f"", "Error"), delete_after=config.deltimer)
                 else:
-                    await ctx.send(embed=lib.Editable_E("User has no warnings", f"", "Error"))
+                    await ctx.send(embed=lib.Editable_E("User has no warnings", f"", "Error"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}warn remove @someone (amount)", "Usage"))
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}warn remove @someone (amount)", "Usage"), delete_after=config.deltimer)
         else:
-            await ctx.send(embed=lib.Editable_E("Warnings arent enabled", f"Run {ctx.prefix}warn to begin", "Error"))
+            await ctx.send(embed=lib.Editable_E("Warnings arent enabled", f"Run {ctx.prefix}warn to begin", "Error"), delete_after=config.deltimer)
 
 
     def warn_exists(self, GID):
@@ -1024,13 +970,12 @@ class Moderation(commands.Cog):
         role = discord.utils.get(ctx.guild.roles, name="punished")
         if not role in ctx.guild.roles:
             channel = ctx.channel
-            e = await ctx.send(embed=lib.Editable_E("Punished Role not found. Creating...", "", "Error"))
+            await ctx.send(embed=lib.Editable_E("Punished Role not found. Creating...", "", "Error"), delete_after=config.deltimer)
             await ctx.guild.create_role(name="punished"),
             await asyncio.sleep(5)
             pass
-        w = await ctx.send(embed=lib.Editable_S("Setting Role & Channel Permissions", "", "50% Completed"))
+        await ctx.send(embed=lib.Editable_S("Setting Role & Channel Permissions", "", "50% Completed"), delete_after=config.deltimer)
         if not role in ctx.guild.roles:
-            await e.delete()
         for channel in ctx.guild.channels:
             role = discord.utils.get(channel.guild.roles, name="punished")
             overwrite = discord.PermissionOverwrite()
@@ -1039,9 +984,7 @@ class Moderation(commands.Cog):
             overwrite.add_reactions = False
             await channel.set_permissions(role, overwrite=overwrite),
         await asyncio.sleep(5)
-        await w.delete()
-        d = await ctx.send(embed=lib.Editable_S("All permissions have been set.", "", "100% Completed"))
-        await lib.erase(ctx, d)
+        await ctx.send(embed=lib.Editable_S("All permissions have been set.", "", "100% Completed"), delete_after=config.deltimer)
 
 
 def setup(bot):

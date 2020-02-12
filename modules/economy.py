@@ -55,9 +55,9 @@ class Economy(commands.Cog):
         UID = str(user.id)
         GID = str(ctx.guild.id)
         if self.account_check(GID, UID):
-            await ctx.send(embed=lib.Editable("Bank Commands", f"`{ctx.prefix}bank register` - Creates you a bank account (You already have one)\n`{ctx.prefix}bank balance` - Shows your balance\n`{ctx.prefix}bank transfer @user (amount)` - Transfer credits to another user\n`{ctx.prefix}bank add @user (amount)` - Adds Credits to bank balance of another user (Admin Only)\n\n**Game Commands**\n`{ctx.prefix}blackjack (bet)` - Play blackjack against the house\n`{ctx.prefix}slots (bet)` - Play the slot machine", "Devo Bank"))
+            await ctx.send(embed=lib.Editable("Bank Commands", f"`{ctx.prefix}bank register` - Creates you a bank account (You already have one)\n`{ctx.prefix}bank balance` - Shows your balance\n`{ctx.prefix}bank transfer @user (amount)` - Transfer credits to another user\n`{ctx.prefix}bank add @user (amount)` - Adds Credits to bank balance of another user (Admin Only)\n\n**Game Commands**\n`{ctx.prefix}blackjack (bet)` - Play blackjack against the house\n`{ctx.prefix}slots (bet)` - Play the slot machine", "Devo Bank"), delete_after=config.deltimer)
         else:
-            await ctx.send(embed=lib.Editable("Just do it!", "Use !bank register to create a bank account", "Devo Bank"))
+            await ctx.send(embed=lib.Editable("Just do it!", "Use !bank register to create a bank account", "Devo Bank"), delete_after=config.deltimer)
 
     @bank.group(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -67,9 +67,9 @@ class Economy(commands.Cog):
         GID = str(ctx.guild.id)
         if self.bank_exists(GID):
             if self.create_account(GID, user):
-                await ctx.send(embed=lib.Editable(f"Bank Account Created for {ctx.author}", f"Current balance: {self.get_balance(GID, UID)}", "Devo Bank"))
+                await ctx.send(embed=lib.Editable(f"Bank Account Created for {ctx.author}", f"Current balance: {self.get_balance(GID, UID)}", "Devo Bank"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("You can only have one bank account.", "", "Devo Bank"))
+                await ctx.send(embed=lib.Editable_E("You can only have one bank account.", "", "Devo Bank"), delete_after=config.deltimer)
         else:
             self.bank_create(GID)
             await ctx.reinvoke()
@@ -81,18 +81,18 @@ class Economy(commands.Cog):
         if user is None:
             UID = str(ctx.author.id)
             if self.account_check(GID, UID):
-                await ctx.send(embed=lib.Editable(f"{ctx.author.name}, Your balance is {self.get_balance(GID, UID)}", "", "Devo Bank"))
+                await ctx.send(embed=lib.Editable(f"{ctx.author.name}, Your balance is {self.get_balance(GID, UID)}", "", "Devo Bank"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("You dont have a bank account", f"Run {ctx.prefix}bank register to open an account.", "Devo Bank"))
+                await ctx.send(embed=lib.Editable_E("You dont have a bank account", f"Run {ctx.prefix}bank register to open an account.", "Devo Bank"), delete_after=config.deltimer)
         else:
             UID = str(user.id)
             if self.bank_exists(GID):
                 if self.account_check(GID, UID):
-                    await ctx.send(embed=lib.Editable(f"{user.name}'s balance is {self.get_balance(GID, UID)}", "", "Devo Bank"))
+                    await ctx.send(embed=lib.Editable(f"{user.name}'s balance is {self.get_balance(GID, UID)}", "", "Devo Bank"), delete_after=config.deltimer)
                 else:
-                    await ctx.send(embed=lib.Editable_E(f"{user.name} has no bank account.", "", "Devo Bank"))
+                    await ctx.send(embed=lib.Editable_E(f"{user.name} has no bank account.", "", "Devo Bank"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("There is no bank", f"Run {ctx.prefix}bank register to start.", "Devo Bank"))
+                await ctx.send(embed=lib.Editable_E("There is no bank", f"Run {ctx.prefix}bank register to start.", "Devo Bank"), delete_after=config.deltimer)
 
     @bank.group(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -103,19 +103,19 @@ class Economy(commands.Cog):
                 if amount > 1:
                     if self.account_check(GID, user.id):
                         if self.enough_money(GID, ctx.author.id, amount):
-                            await ctx.send(embed=lib.Editable(f"**{user.name}**'s in Luck!", f"**{ctx.author.name}** transferred {amount} credits to **{user.name}**'s account.", "Devo Bank"))
+                            await ctx.send(embed=lib.Editable(f"**{user.name}**'s in Luck!", f"**{ctx.author.name}** transferred {amount} credits to **{user.name}**'s account.", "Devo Bank"), delete_after=config.deltimer)
                             self.withdraw_money(GID, ctx.author.id, amount)
                             self.add_money(GID, user.id, amount)
                         else:
-                            await ctx.send(embed=lib.Editable_E("You're too poor to do that", "", "Devo Bank"))
+                            await ctx.send(embed=lib.Editable_E("You're too poor to do that", "", "Devo Bank"), delete_after=config.deltimer)
                     else:
-                        await ctx.send(embed=lib.Editable_E(f"{user.name} has no bank account", "", "Devo Bank"))
+                        await ctx.send(embed=lib.Editable_E(f"{user.name} has no bank account", "", "Devo Bank"), delete_after=config.deltimer)
                 else:
-                    await ctx.send(embed=lib.Editable_E("Transfer at least 1 credit", "", "Devo Bank"))
+                    await ctx.send(embed=lib.Editable_E("Transfer at least 1 credit", "", "Devo Bank"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}bank transfer @someone (amount)", "Usage"))
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}bank transfer @someone (amount)", "Usage"), delete_after=config.deltimer)
         else:
-            await ctx.send(embed=lib.Editable_E("You dont have a bank account", f"Run {ctx.prefix}bank register to open an account.", "Devo Bank"))
+            await ctx.send(embed=lib.Editable_E("You dont have a bank account", f"Run {ctx.prefix}bank register to open an account.", "Devo Bank"), delete_after=config.deltimer)
 
     @bank.group(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -125,17 +125,16 @@ class Economy(commands.Cog):
             if user and amount:
                 if self.account_check(GID, user.id):
                     if self.account_check(GID, ctx.author.id):
-                        await ctx.send(embed=lib.Editable("Some kind of wizardry", f"Added {amount} credits to {user.mention}'s balance!", "Devo Bank"))
+                        await ctx.send(embed=lib.Editable("Some kind of wizardry", f"Added {amount} credits to {user.mention}'s balance!", "Devo Bank"), delete_after=config.deltimer)
                         self.add_money(GID, user.id, amount)
                     else:
-                        await ctx.send(embed=lib.Editable_E("You dont have a bank account", f"Run {ctx.prefix}bank register to open an account.", "Devo Bank"))
+                        await ctx.send(embed=lib.Editable_E("You dont have a bank account", f"Run {ctx.prefix}bank register to open an account.", "Devo Bank"), delete_after=config.deltimer)
                 else:
-                    await ctx.send(embed=lib.Editable_E(f"{user.name} has no bank account.", "", "Devo Bank"))
+                    await ctx.send(embed=lib.Editable_E(f"{user.name} has no bank account.", "", "Devo Bank"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}bank add @someone (amount)", "Usage"))
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments", f"Usage Example:\n\n{ctx.prefix}bank add @someone (amount)", "Usage"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     """@commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -179,17 +178,17 @@ class Economy(commands.Cog):
             if UID in self.benefits_register:
                 seconds = abs(self.benefits_register[UID] - int(time.perf_counter()))
                 if seconds >= self.settings["BENEFITS_TIME"]:
-                    await ctx.send(embed=lib.Editable(f"{ctx.author.name} collected their benefits", "{} has been added to your account!".format(self.settings["BENEFITS_CREDITS"]), "Devo Bank"))
+                    await ctx.send(embed=lib.Editable(f"{ctx.author.name} collected their benefits", "{} has been added to your account!".format(self.settings["BENEFITS_CREDITS"]), "Devo Bank"), delete_after=config.deltimer)
                     self.add_money(GID, UID, self.settings["BENEFITS_CREDITS"])
                     self.benefits_register[UID] = int(time.perf_counter())
                 else:
-                    await ctx.send(embed=lib.Editable_E("Uh oh", "You need to wait another {} seconds until you can get more benefits.".format(self.display_time(self.settings["BENEFITS_TIME"] - seconds)), "Devo Bank"))
+                    await ctx.send(embed=lib.Editable_E("Uh oh", "You need to wait another {} seconds until you can get more benefits.".format(self.display_time(self.settings["BENEFITS_TIME"] - seconds)), "Devo Bank"), delete_after=config.deltimer)
             else:
                 self.benefits_register[UID] = int(time.perf_counter())
-                await ctx.send(embed=lib.Editable(f"{ctx.author.name} collected their benefits", "{} has been added to your account!".format(self.settings["BENEFITS_CREDITS"]), "Devo Bank"))
+                await ctx.send(embed=lib.Editable(f"{ctx.author.name} collected their benefits", "{} has been added to your account!".format(self.settings["BENEFITS_CREDITS"]), "Devo Bank"), delete_after=config.deltimer)
                 self.add_money(GID, UID, self.settings["BENEFITS_CREDITS"])
         else:
-            await ctx.send(embed=lib.Editable_E("Uh oh", f"{ctx.author.mention}, You dont have a bank account at the Devo Bank. Type !bank register to open one.", "Devo Bank"))
+            await ctx.send(embed=lib.Editable_E("Uh oh", f"{ctx.author.mention}, You dont have a bank account at the Devo Bank. Type !bank register to open one.", "Devo Bank"), delete_after=config.deltimer)
 
     @commands.command()
     async def slots(self, ctx, bid : int=None):
@@ -205,16 +204,16 @@ class Economy(commands.Cog):
                                 self.slot_register[UID] = int(time.perf_counter())
                                 await self.slot_machine(ctx.message, bid)
                             else:
-                                await ctx.send(embed=lib.Editable_E("Uh oh", "The slot machine is still cooling off! Wait {} seconds between each pull".format(self.settings["SLOT_TIME"]), "Slot Machine"))
+                                await ctx.send(embed=lib.Editable_E("Uh oh", "The slot machine is still cooling off! Wait {} seconds between each pull".format(self.settings["SLOT_TIME"]), "Slot Machine"), delete_after=config.deltimer)
                         else:
                             self.slot_register[UID] = int(time.perf_counter())
                             await self.slot_machine(ctx.message, bid)
                     else:
-                        await ctx.send(embed=lib.Editable_E("Uh oh", "{} Bid must be between {} and {}.".format(ctx.author.mention, self.settings["SLOT_MIN"], self.settings["SLOT_MAX"]), "Slot Machine"))
+                        await ctx.send(embed=lib.Editable_E("Uh oh", "{} Bid must be between {} and {}.".format(ctx.author.mention, self.settings["SLOT_MIN"], self.settings["SLOT_MAX"]), "Slot Machine"), delete_after=config.deltimer)
                 else:
-                    await ctx.send(embed=lib.Editable_E("You're Skint!", f"{ctx.author.mention} You're too poor to play that bet on the slot machine!", "Slot Machine"))
+                    await ctx.send(embed=lib.Editable_E("You're Skint!", f"{ctx.author.mention} You're too poor to play that bet on the slot machine!", "Slot Machine"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("Uhhh", "You need to type a bid amound", "Slot Machine"))
+                await ctx.send(embed=lib.Editable_E("Uhhh", "You need to type a bid amound", "Slot Machine"), delete_after=config.deltimer)
 
     @commands.command()
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -254,11 +253,11 @@ class Economy(commands.Cog):
                             break
 
                 else:
-                    await ctx.send(embed=lib.Editable_E("You're Skint!", f"{ctx.author.mention} You're too poor to play that bet!", "Blackjack"))
+                    await ctx.send(embed=lib.Editable_E("You're Skint!", f"{ctx.author.mention} You're too poor to play that bet!", "Blackjack"), delete_after=config.deltimer)
             else:
-                await ctx.send(embed=lib.Editable_E("Uh oh", f"This guild doesnt have the bank setup! Type `{ctx.prefix}bank register` to start!", "Devo Bank"))
+                await ctx.send(embed=lib.Editable_E("Uh oh", f"This guild doesnt have the bank setup! Type `{ctx.prefix}bank register` to start!", "Devo Bank"), delete_after=config.deltimer)
         else:
-            await ctx.send(embed=lib.Editable_E("Oops", "Please enter an amount to bet.", "Blackjack"))
+            await ctx.send(embed=lib.Editable_E("Oops", "Please enter an amount to bet.", "Blackjack"), delete_after=config.deltimer)
 
 # Economy Settings ------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -272,8 +271,7 @@ class Economy(commands.Cog):
             msg += f"\nType {ctx.prefix}help to see the list of commands.```"
             await ctx.send(msg)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @economyset.command(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -281,14 +279,13 @@ class Economy(commands.Cog):
         if ctx.author is ctx.guild.owner:
             if bid:
                 self.settings["SLOT_MIN"] = bid
-                await ctx.send("Minimum bid is now " + str(bid) + " credits.")
+                await ctx.send("Minimum bid is now " + str(bid) + " credits.", delete_after=config.deltimer)
                 with open("./data/economy/settings.json", "w") as s:
                     json.dump(self.settings, s)
             else:
-                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a minimum amount", "Economy"))
+                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a minimum amount", "Economy"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @economyset.command(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -296,14 +293,13 @@ class Economy(commands.Cog):
         if ctx.author is ctx.guild.owner:
             if bid:
                 self.settings["SLOT_MAX"] = bid
-                await ctx.send("Maximum bid is now " + str(bid) + " credits.")
+                await ctx.send("Maximum bid is now " + str(bid) + " credits.", delete_after=config.deltimer)
                 with open("./data/economy/settings.json", "w") as s:
                     json.dump(self.settings, s)
             else:
-                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a maximum amount", "Economy"))
+                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a maximum amount", "Economy"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @economyset.command(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -311,14 +307,13 @@ class Economy(commands.Cog):
         if ctx.author is ctx.guild.owner:
             if seconds:
                 self.settings["SLOT_TIME"] = seconds
-                await ctx.send("Cooldown is now " + str(seconds) + " seconds.")
+                await ctx.send("Cooldown is now " + str(seconds) + " seconds.", delete_after=config.deltimer)
                 with open("./data/economy/settings.json", "w") as s:
                     json.dump(self.settings, s)
             else:
-                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a slot time.", "Economy"))
+                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a slot time.", "Economy"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @economyset.command(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -326,14 +321,13 @@ class Economy(commands.Cog):
         if ctx.author is ctx.guild.owner:
             if seconds:
                 self.settings["BENEFITS_TIME"] = seconds
-                await ctx.send("Value modified. At least " + str(seconds) + " seconds must pass between each benefits claim.")
+                await ctx.send("Value modified. At least " + str(seconds) + " seconds must pass between each benefits claim.", delete_after=config.deltimer)
                 with open("./data/economy/settings.json", "w") as s:
                     json.dump(self.settings, s)
             else:
-                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a benefits delay", "Economy"))
+                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter a benefits delay", "Economy"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
     @economyset.command(invoke_without_command=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -341,14 +335,13 @@ class Economy(commands.Cog):
         if ctx.author is ctx.guild.owner:
             if credits:
                 self.settings["BENEFITS_CREDITS"] = credits
-                await ctx.send("Every benefits claim will now give " + str(credits) + " credits.")
+                await ctx.send("Every benefits claim will now give " + str(credits) + " credits.", delete_after=config.deltimer)
                 with open("./data/economy/settings.json", "w") as s:
                     json.dump(self.settings, s)
             else:
-                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter an amount", "Economy"))
+                await ctx.send(embed=lib.Editable_E("You Missed Something", "You need to enter an amount", "Economy"), delete_after=config.deltimer)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm(), delete_after=config.deltimer)
 
 
 

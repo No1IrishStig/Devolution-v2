@@ -17,8 +17,7 @@ class Admin(commands.Cog):
     @commands.check(checks.is_owner)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def cog(self, ctx):
-        usage = await ctx.send(embed=lib.Editable_E("Invalid Arguments", "Options:\n\n**load** - loads named cog.\n **unload** - Unloads named cog.\n **list** - Lists all cogs.", "Cog Usage"))
-        await lib.erase(ctx, usage)
+        await ctx.send(embed=lib.Editable_E("Invalid Arguments", "Options:\n\n**load** - loads named cog.\n **unload** - Unloads named cog.\n **list** - Lists all cogs.", "Cog Usage"), delete_after=config.deltimer)
 
     @cog.group(invoke_without_command=True)
     @commands.check(check.is_admin)
@@ -27,15 +26,12 @@ class Admin(commands.Cog):
         if cog:
             try:
                 self.bot.load_extension(f"modules.{cog}")
-                s = await ctx.send(embed=lib.Editable_S(f"{cog} has been loaded.", "", "Cogs"))
-                await lib.erase(ctx, s)
+                await ctx.send(embed=lib.Editable_S(f"{cog} has been loaded.", "", "Cogs"), delete_after=config.deltimer)
             except Exception as error:
-                ee = await ctx.send(embed=lib.Editable_E(f"{cog} failed to loaded.", "", "Error"))
+                await ctx.send(embed=lib.Editable_E(f"{cog} failed to loaded.", "", "Error"), delete_after=config.deltimer)
                 func.log(error)
-                await lib.erase(ctx, ee)
         else:
-            e = await ctx.send(embed=lib.Editable_E("Please name a cog to load.", "", "Error"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("Please name a cog to load.", "", "Error"), delete_after=config.deltimer)
 
     @cog.group(invoke_without_command=True)
     @commands.check(check.is_admin)
@@ -44,15 +40,14 @@ class Admin(commands.Cog):
         if cog:
             try:
                 self.bot.unload_extension(f"modules.{cog}")
-                s = await ctx.send(embed=lib.Editable(f"{cog} was unloaded.", "", "Cogs"))
-                await lib.erase(ctx, s)
+                await ctx.send(embed=lib.Editable(f"{cog} was unloaded.", "", "Cogs"), delete_after=config.deltimer)
+
             except Exception as error:
-                ee = await ctx.send(embed=lib.Editable_E(f"{cog} failed to unload.", "", "Error"))
+                await ctx.send(embed=lib.Editable_E(f"{cog} failed to unload.", "", "Error"), delete_after=config.deltimer)
                 func.log(error)
-                await lib.erase(ctx, ee)
+
         else:
-            e = await ctx.send(embed=lib.Editable_E("Please name a cog to unload.", "", "Error"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("Please name a cog to unload.", "", "Error"), delete_after=config.deltimer)
 
     @cog.group(invoke_without_command=True)
     @commands.check(check.is_admin)
@@ -63,8 +58,7 @@ class Admin(commands.Cog):
             if file.endswith(".py"):
                 name = file[:-3]
                 cogs.append(name)
-        list = await ctx.send(embed=lib.Editable("Available Cogs", ", ".join(cogs), "Cogs"))
-        await lib.erase(ctx, list)
+        await ctx.send(embed=lib.Editable("Available Cogs", ", ".join(cogs), "Cogs"), delete_after=config.deltimer)
 
     @commands.command()
     @commands.check(check.is_admin)
@@ -72,7 +66,7 @@ class Admin(commands.Cog):
     async def reload(self, ctx):
         await ctx.send("Reloading...")
         os.system("cls")
-        os.system("py -3 ./bot.py")
+        os.system("python3 bot.py")
         await self.bot.logout()
 
     @commands.command()
@@ -88,11 +82,11 @@ class Admin(commands.Cog):
     async def leaveid(self, ctx, id:int=None):
         if id:
             guild = self.bot.get_guild(id)
-            await ctx.send(embed=lib.Editable(f"I left the guild '{guild}'", "", f"{guild}"))
+            await ctx.send(embed=lib.Editable(f"I left the guild '{guild}'", "", f"{guild}"), delete_after=config.deltimer)
             await guild.leave()
         else:
-            e = await ctx.send(embed=lib.Editable_E("I require a Guild ID to leave", "", "Error"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("I require a Guild ID to leave", "", "Error"), delete_after=config.deltimer)
+
 
     @commands.command()
     @commands.check(check.is_admin)
@@ -103,20 +97,18 @@ class Admin(commands.Cog):
         game = ' '.join(args)
         if activity == "playing" or activity == "listening" or activity == "watching":
             if not game == "":
-                suc = await ctx.send(embed=lib.Editable(f"I am now {activity} {game}", "", "Playing"))
+                suc = await ctx.send(embed=lib.Editable(f"I am now {activity} {game}", "", "Playing"), delete_after=config.deltimer)
                 if activity == "playing":
                     await lib.sp(self, ctx, game)
                 elif activity == "listening":
                     await lib.sa(self, ctx, listening, game)
                 elif activity == "watching":
                     await lib.sa(self, ctx, watching, game)
-                await lib.erase(ctx, suc)
             else:
-                usag = await ctx.send(embed=lib.Editable_E("Invalid Arguments: Please enter a valid activity", "Usage Examples:\n\n**playing {name}**\n**listening {name}**\n**watching {name}**", "Activity Usage"))
-                await lib.erase(ctx, usag)
+                await ctx.send(embed=lib.Editable_E("Invalid Arguments: Please enter a valid activity", "Usage Examples:\n\n**playing {name}**\n**listening {name}**\n**watching {name}**", "Activity Usage"), delete_after=config.deltimer)
         else:
-            usage = await ctx.send(embed=lib.Editable_E("Invalid Arguments: Please enter a valid activity", "Usage Examples:\n\n**playing {name}**\n**listening {name}**\n**watching {name}**", "Activity Usage"))
-            await lib.erase(ctx, usage)
+            await ctx.send(embed=lib.Editable_E("Invalid Arguments: Please enter a valid activity", "Usage Examples:\n\n**playing {name}**\n**listening {name}**\n**watching {name}**", "Activity Usage"), delete_after=config.deltimer)
+
 
     @commands.command()
     @commands.check(check.is_admin)
@@ -135,11 +127,9 @@ class Admin(commands.Cog):
                     embed.set_footer(text=f"UserID: {ctx.author.id}")
                     await user.send(embed=embed)
                 except Exception as error:
-                        er = await ctx.send(embed=lib.Editable_E("Message failed to send.", "", "Error"))
-                        await lib.erase(ctx, er)
+                        await ctx.send(embed=lib.Editable_E("Message failed to send.", "", "Error"), delete_after=config.deltimer)
         else:
-            e = await ctx.send(embed=lib.Editable_E("Please @someone and message to DM", "", "Error"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("Please @someone and message to DM", "", "Error"), delete_after=config.deltimer)
 
     @commands.command()
     @commands.check(check.is_admin)
@@ -159,18 +149,16 @@ class Admin(commands.Cog):
                     embed.set_footer(text=f"UserID: {ctx.author.id}")
                     await user.send(embed=embed)
                 except Exception as error:
-                        er = await ctx.send(embed=lib.Editable_E("Message failed to send.", "", "Error"))
-                        await lib.erase(ctx, er)
+                    await ctx.send(embed=lib.Editable_E("Message failed to send.", "", "Error"), delete_after=config.deltimer)
         else:
-            e = await ctx.send(embed=lib.Editable_E("Please give me an ID and message to DM", "", "Error"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable_E("Please give me an ID and message to DM", "", "Error"), delete_after=config.deltimer)
 
     @commands.command()
     @commands.check(check.is_admin)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def guilds(self, ctx):
         guild = self.bot.guilds
-        await ctx.author.send(embed=lib.Editable(f"Guild Count {len(self.bot.guilds)}", "{}".format(*guild.id, sep='\n'), "Guilds"))
+        await ctx.author.send(embed=lib.Editable(f"Guild Count {len(self.bot.guilds)}", "{}".format(*guild.id, sep='\n'), "Guilds"), delete_after=config.deltimer)
 
 
 def setup(bot):

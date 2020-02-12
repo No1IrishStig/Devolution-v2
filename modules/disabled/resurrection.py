@@ -34,176 +34,19 @@ class Resurrection(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    @commands.check(check.is_admin)
-    async def fapply(self, ctx, user: discord.Member = None):
-        channel = await self.bot.fetch_channel(638894822899580939)
-        role = discord.utils.get(ctx.guild.roles, name="applied_tester")
-        badrole = discord.utils.get(ctx.guild.roles, name="Tester")
-        self.log(f"{ctx.author.id} Force Attempted {user.id} to apply for tester.")
-        if not badrole in user.roles:
-            if role in user.roles:
-                err = await ctx.send(embed=lib.Editable_E("You have already applied to be a tester!", "", "Error"))
-                await lib.erase(ctx, err)
-            else:
-                await user.add_roles(role)
-                done = await ctx.send(embed=lib.Editable_S("You are now pending to become a tester!", "", "Resurrection"))
-                await channel.send(embed=lib.Editable_S(f"{user.name} Applied for tester.", "", f"{user.id}"))
-                await lib.erase(ctx, done)
-        else:
-            err2 = await ctx.send(embed=lib.Editable_E("You are already a tester!", "", "Resurrection"))
-            await lib.erase(ctx, err2)
-
-    @commands.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def apply(self, ctx):
-        if str(ctx.guild.id) == "470607365733875732":
-            channel = await self.bot.fetch_channel(638894822899580939)
-            role = discord.utils.get(ctx.guild.roles, name="applied_tester")
-            badrole = discord.utils.get(ctx.guild.roles, name="Tester")
-            self.log(f"{ctx.author.id} Attempted to apply for tester.")
-            if not badrole in ctx.author.roles:
-                if role in ctx.author.roles:
-                    err = await ctx.send(embed=lib.Editable_E("You have already applied to be a tester!", "", "Error"))
-                    await lib.erase(ctx, err)
-                else:
-                    await ctx.author.add_roles(role)
-                    done = await ctx.send(embed=lib.Editable_S("You are now pending to become a tester!", "", "Resurrection"))
-                    await channel.send(embed=lib.Editable_S(f"{ctx.author.name} Applied for tester.", "", f"{ctx.author.id}"))
-                    await lib.erase(ctx, done)
-            else:
-                err2 = await ctx.send(embed=lib.Editable_E("You are already a tester!", "", "Resurrection"))
-                await lib.erase(ctx, err2)
-
-    @commands.group(aliases=["res"], no_pm=True, invoke_without_command=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def resurrection(self, ctx):
-        if str(ctx.guild.id) == "470607365733875732":
-            e = await ctx.send(embed=lib.Editable("Resurrection Commands", f"Use {ctx.prefix}resurrection help to view the commands\n\nCommands:\n{ctx.prefix}suggestion - Suggest a feature\n{ctx.prefix}issue - Report a bug\n{ctx.prefix}banr - Report an ingame ban**", "Resurrection"))
-            await lib.erase(ctx, e)
-        else:
-            return
-
-    @resurrection.group(no_pm=True, invoke_without_command=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def help(self, ctx):
-        if str(ctx.guild.id) == "470607365733875732":
-            user = ctx.author
-            await user.send(embed=lib.Editable("Resurrection Commands", f"Commands:\n**{ctx.prefix}suggestion (message)** - Submit a suggestion to the Development team \n**{ctx.prefix}issue (message)** - Submit a bug report to the Development team\n**{ctx.prefix}banr (message)** - Submit a ban report\n\n**!res help** - This page", "Resurrection"))
-            await asyncio.sleep(5)
-            await ctx.message.delete()
-        else:
-            return
-
-    @help.group(no_pm=True, invoke_without_command=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def install(self, ctx):
-        if str(ctx.guild.id) == "470607365733875732":
-            user = ctx.author
-            await user.send("https://resurrectionmenu.com/index.php?threads/ultimate-installation-guide.65/\n\nIf you still need help, use the #support channel!")
-            await asyncio.sleep(5)
-            await ctx.message.delete()
-        else:
-            return
-
-    @commands.command(no_pm=True, invoke_without_command=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def issue(self, ctx, *args):
-        if str(ctx.guild.id) == "470607365733875732":
-            content = ""
-            for word in args:
-                content += word
-                content += " "
-            if content is "":
-                e = await ctx.send(embed=lib.Editable("Oops!", f"To use that command properly, try this:\n\n**{ctx.prefix}issue (message)**", "Resurrection"))
-                await lib.erase(ctx, e)
-            else:
-                channel = ctx.guild.get_channel(596781919216205873)
-                bug = discord.Embed(
-                colour=0xe8a848,
-                description = content,
-                timestamp=datetime.datetime.utcnow()
-                )
-                bug.set_author(name=f"Resurrection - Bug Report from {ctx.author.name}")
-                bug.set_thumbnail(url="https://img.no1irishstig.co.uk/gkohk.png")
-                await channel.send(embed=bug)
-                await asyncio.sleep(5)
-                await ctx.message.delete()
-                self.log(f"{ctx.author.id} Submitted a bug report")
-        else:
-            return
-
-    @commands.command(no_pm=True, invoke_without_command=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def suggestion(self, ctx, *args):
-        if str(ctx.guild.id) == "470607365733875732":
-            content = ""
-            for word in args:
-                content += word
-                content += " "
-            if content is "":
-                e = await ctx.send(embed=lib.Editable("Oops!", f"To use that command properly, try this:\n\n**{ctx.prefix}suggestion (message)**", "Resurrection"))
-                await lib.erase(ctx, e)
-            else:
-                channel = ctx.guild.get_channel(596781919216205873)
-                suggest = discord.Embed(
-                colour=0x48cde8,
-                description = content,
-                timestamp=datetime.datetime.utcnow()
-                )
-                suggest.set_author(name=f"Resurrection - Suggestion from {ctx.author.name}")
-                suggest.set_thumbnail(url="https://banner2.kisspng.com/20180616/czv/kisspng-cartoon-comics-clip-art-thinking-bulb-5b24f95e8df576.9573740515291497905815.jpg")
-                suggestion = await channel.send(embed=suggest)
-                await suggestion.add_reaction("👍")
-                await suggestion.add_reaction("👎")
-                await asyncio.sleep(5)
-                await ctx.message.delete()
-                self.log(f"{ctx.author.id} Submitted a suggestion")
-        else:
-            return
-
-    @commands.command(no_pm=True, invoke_without_command=True)
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    async def banr(self, ctx, *args):
-        if str(ctx.guild.id) == "470607365733875732":
-            content = ""
-            for word in args:
-                content += word
-                content += " "
-            if content is "":
-                e = await ctx.send(embed=lib.Editable("Oops!", f"To use that command properly, try this:\n\n**{ctx.prefix}banr (message)**", "Resurrection"))
-                await lib.erase(ctx, e)
-            else:
-                channel = ctx.guild.get_channel(596781919216205873)
-                ban = discord.Embed(
-                colour=0xf54242,
-                description = content,
-                timestamp=datetime.datetime.utcnow()
-                )
-                ban.set_author(name=f"Resurrection - Ban Report from {ctx.author.name}")
-                ban.set_thumbnail(url="https://img.no1irishstig.co.uk/6ucli.png")
-                await channel.send(embed=ban)
-                await asyncio.sleep(5)
-                await ctx.message.delete()
-                self.log(f"{ctx.author.id} Submitted a ban report")
-        else:
-            return
-
     """
     Key Gen -------------------------------------------------------------
     @commands.group(no_pm=True, invoke_without_command=True)
     async def key(self, ctx):
         if ctx.author.id in config.admins:
-            e = await ctx.send(embed=lib.Editable("Key Gen Commands Commands", "Use `!key gen [auth, vip, upgrade] [amount]`", "Resurrection Key Gen"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable("Key Gen Commands Commands", "Use `!key gen [auth, vip, upgrade] [amount]`", "Resurrection Key Gen"))
         else:
             return
 
     @key.group(no_pm=True, invoke_without_command=True)
     async def gen(self, ctx):
         if ctx.author.id in config.admins:
-            e = await ctx.send(embed=lib.Editable("Key Gen Commands", "Use `!key gen [auth, vip, upgrade] [amount]`", "Resurrection"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable("Key Gen Commands", "Use `!key gen [auth, vip, upgrade] [amount]`", "Resurrection"))
         else:
             return
 
@@ -270,8 +113,7 @@ class Resurrection(commands.Cog):
     @key.group(no_pm=True, invoke_without_command=True)
     async def list(self, ctx):
         if ctx.author.id in config.admins:
-            e = await ctx.send(embed=lib.Editable("Key Gen Commands", "Use `!key list [auth, vip, upgrade]`", "Resurrection"))
-            await lib.erase(ctx, e)
+            await ctx.send(embed=lib.Editable("Key Gen Commands", "Use `!key list [auth, vip, upgrade]`", "Resurrection"))
         else:
             return
 
@@ -460,7 +302,6 @@ class Resurrection(commands.Cog):
 
             category1 = discord.utils.get(ctx.guild.categories, name="Important")
             await category1.create_text_channel("welcome")
-            await category1.create_text_channel("information")
             await category1.create_text_channel("rules")
             await category1.create_text_channel("faq")
 
@@ -468,31 +309,19 @@ class Resurrection(commands.Cog):
             await category2.create_text_channel("announcements")
             await category2.create_text_channel("general")
             await category2.create_text_channel("support")
-            await category2.create_text_channel("notify")
-            await category2.create_text_channel("notifications", overwrites=notifications_overwrites)
-            await category2.create_text_channel("notification-comments")
             await category2.create_text_channel("commands")
-
-            category3 = discord.utils.get(ctx.guild.categories, name="Voice Channels")
-            await category3.create_voice_channel("General")
-            await category3.create_voice_channel("Music")
+            await category2.create_text_channel("中文")
 
             category4 = discord.utils.get(ctx.guild.categories, name="Tester Channels")
             await category4.create_text_channel("announcements")
             await category4.create_text_channel("testers")
             await category4.create_text_channel("bug-reports")
 
-            category5 = discord.utils.get(ctx.guild.categories, name="Translator Channels")
-            await category5.create_text_channel("translation-files")
-            await category5.create_text_channel("translators")
-
             category6 = discord.utils.get(ctx.guild.categories, name="Staff")
             await category6.create_text_channel("staff-chat")
             await category6.create_text_channel("logs")
-            await category6.create_text_channel("commands")
             await category6.create_text_channel("hwid")
             await category6.create_text_channel("keys", overwrites=keys)
-            await category6.create_voice_channel("Voice")
             # Categories & Channels End --------------------------------------------------------------
 
             # Messages -------------------------------------------------------------------------------
@@ -526,20 +355,6 @@ class Resurrection(commands.Cog):
             embed.add_field(name="Why does my mechanic not work anymore?", value="Disable remote kick protection", inline=False)
             embed.add_field(name="Why do online options & all online options not work sometimes?", value="Players must be within 800 meters of you or else some of the options will not work on them.", inline=False)
             await faq.send(embed=embed)
-
-            notify = discord.utils.get(ctx.guild.channels, name="notify")
-            embed = discord.Embed(
-                title="How to submit!",
-                description="If you need help use !res help\n\nSpamming these commands will result in punishment.\n\nPlease dont send us duplicate suggestions and bug reports! Check in notifications first!",
-                colour=0x9bf442,
-                timestamp=datetime.datetime.utcnow()
-                )
-            embed.set_author(name="Resurrection Menu", url="https://resurrectionmenu.com", icon_url="https://img.no1irishstig.co.uk/m9001.png")
-            embed.set_footer()
-            embed.add_field(name="Suggestions", value=f"{ctx.prefix}suggestion (suggestion)", inline=False)
-            embed.add_field(name="Bug Reports", value=f"{ctx.prefix}issue (bug report)", inline=False)
-            embed.add_field(name="Ban Reports", value=f"{ctx.prefix}issue (ban report)", inline=False)
-            await notify.send(embed=embed)
 
             general = discord.utils.get(ctx.guild.channels, name="general")
             await general.send(embed=lib.Editable("Resurrection Recreated!", "The server has been made with all channels, roles and permissions as before.", "Server Generator"))

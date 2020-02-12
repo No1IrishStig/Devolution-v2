@@ -108,13 +108,5 @@ class lib(commands.Cog):
         )
         return sa
 
-    async def erase(ctx, name):
-        erase = (
-            await asyncio.sleep(int(config.deltimer)),
-            await ctx.message.delete(),
-            await name.delete()
-            )
-        return erase
-
 def setup(bot):
     bot.add_cog(Economy(bot))

@@ -31,7 +31,6 @@ class Core(commands.Cog):
     @commands.group(invoke_without_command=True, no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def help(self, ctx):
-        author = ctx.author
         embed = discord.Embed(
             title = "Help",
             colour = 0x9bf442,
@@ -44,17 +43,13 @@ class Core(commands.Cog):
         embed.add_field(name="Useful", value="**say** - Speak as the bot\n**rename** - Change a users nickname\n**invite** - Sends a bot invite link\n**embed** - Creates an embed message\n**role** - Gives role options\n**math** - Gives usage details", inline=False)
         embed.add_field(name="Moderation", value="**kick**- Kick a mentioned user\n**ban** - Ban a mentioned user\n**hackban** - Allows you to ban a UserID\n**punish** - Gives usage details\n**clean** - Cleans the current channel of bot messages and commands\n**cleanup** - Gives usage details\n**logs** - Gives usage details\n**warn** - Gives usage details\n**move** - Gives usage details", inline=False)
         embed.add_field(name="Admin", value="**leave** - Makes the bot leave the guild\n**setpresence(sp)** - Change the playing status of the bot.\n**shutdown** - Sends the bot into a deep sleep ...\n**cog** - Displays list of Cog Options\n**pm** - PMs Target user as bot\n**pmid** - PMs target ID as bot\n**amiadmin** - Tells you if you're a bot admin", inline=False)
-        await author.send(embed=embed)
-        await asyncio.sleep(10)
-        await ctx.message.delete()
+        await ctx.author.send(embed=embed, delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def invite(self, ctx):
-        user = ctx.author
-        await user.send(f"Heres the link to invite me to your guilds!\n\nhttps://discordapp.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=8")
-        await asyncio.sleep(10)
         await ctx.message.delete()
+        await ctx.author.send(f"Heres the link to invite me to your guilds!\n\nhttps://discordapp.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=8")
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -69,8 +64,8 @@ class Core(commands.Cog):
         embed.add_field(name="Uptime", value=text)
         embed.set_author(name="Devolution", icon_url="https://i.imgur.com/BS6YRcT.jpg")
         embed.set_footer(icon_url="https://i.imgur.com/BS6YRcT.jpg", text="Devolution | Core")
-        u = await ctx.send(embed=embed)
-        await lib.erase(ctx, u)
+        await ctx.send(embed=embed, delete_after=config.deltimer)
+
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -90,8 +85,8 @@ class Core(commands.Cog):
     @commands.command(no_pm=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def bug(self, ctx):
-        f = await ctx.send(embed=lib.Editable("https://github.com/No1IrishStig/Devolution-Beta/issues", "", "Bug Report"))
-        await lib.erase(ctx, f)
+        await ctx.send(embed=lib.Editable("https://github.com/No1IrishStig/Devolution-Beta/issues", "", "Bug Report"), delete_after=config.deltimer)
+
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -110,7 +105,7 @@ class Core(commands.Cog):
         embed.add_field(name="Source", value="[Github](https://github.com/No1IrishStig/Devolution-v2)", inline=True)
         embed.add_field(name="Currently Serving", value=f"{sum} Members in {len(self.bot.guilds)} Guild", inline=True)
         embed.set_footer(text="Devolution - Providing Discord since {}".format(self.bot.user.created_at.strftime("%d/%m/%Y")))
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -128,7 +123,7 @@ class Core(commands.Cog):
         embed.add_field(name="AFK Channel", value=ctx.guild.afk_channel, inline=True)
         embed.set_author(name=f"Devolution", icon_url="https://i.imgur.com/BS6YRcT.jpg")
         embed.set_footer(icon_url=ctx.guild.icon_url, text=f"{ctx.guild.name} - {ctx.guild.id}")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=config.deltimer)
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -161,7 +156,7 @@ class Core(commands.Cog):
         embed.add_field(name="Role Count", value=len(user.roles), inline=True)
         embed.add_field(name="Nickname", value=user.nick, inline=True)
         embed.add_field(name="Voice", value=channel, inline=True)
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -177,7 +172,7 @@ class Core(commands.Cog):
         embed.set_thumbnail(url=user.avatar_url)
         embed.set_author(name=user.name, icon_url=user.avatar_url)
         embed.set_footer(text=f"Devolution - Avatar Stealer", icon_url="https://i.imgur.com/BS6YRcT.jpg")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, delete_after=config.deltimer)
 
 # Fun Commands --------------------------------------------------------------------------------
 
@@ -193,7 +188,7 @@ class Core(commands.Cog):
         await asyncio.sleep(2)
         choices = ["Heads", "Tails"]
         rancoin = random.choice(choices)
-        await ctx.send("You flipped a " + rancoin)
+        await ctx.send("You flipped a " + rancoin, delete_after=config.deltimer)
 
     @commands.command(aliases=["color"])
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -207,7 +202,7 @@ class Core(commands.Cog):
                     title = "#" + colour,
                     colour = embedcolour
                     )
-                await ctx.send(embed=embed)
+                await ctx.send(embed=embed, delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -231,7 +226,7 @@ class Core(commands.Cog):
                     embed.add_field(name="Latitude", value=f"{latitude}", inline=True)
                     embed.add_field(name="People in Space", value=f"{people}", inline=True)
                     embed.set_footer(text="Devolution - Space", icon_url="https://i.imgur.com/BS6YRcT.jpg")
-                    await ctx.send(embed=embed)
+                    await ctx.send(embed=embed, delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -255,7 +250,7 @@ class Core(commands.Cog):
                 msg = "How original. No one else had thought of trying to get the bot to insult itself. I applaud your creativity. Yawn. Perhaps this is why you don't have friends. You don't add anything new to any conversation. You are more of a bot than me, predictable answers, and absolutely dull to have an actual conversation with."
                 await ctx.send(author.mention + msg)
             else:
-                await ctx.send(user.mention + msg + randchoice(insults))
+                await ctx.send(user.mention + msg + randchoice(insults)
         else:
             await ctx.send(author.mention + msg + randchoice(insults))
 
@@ -309,11 +304,9 @@ class Core(commands.Cog):
                         g = result["data"][0]["url"]
                         await ctx.send(g)
                     else:
-                        e = await ctx.send(embed=lib.Editable_E("No search results found", "", "Error"))
-                        await lib.erase(ctx, e)
+                        await ctx.send(embed=lib.Editable_E("No search results found", "", "Error"), delete_after=config.deltimer)
                 else:
-                    ee = await ctx.send(embed=lib.Editable_E("Error Contacting API", "", "Error"))
-                    await lib.erase(ctx, ee)
+                    await ctx.send(embed=lib.Editable_E("Error Contacting API", "", "Error"), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -327,11 +320,9 @@ class Core(commands.Cog):
                         g = result["data"]["url"]
                         await ctx.send(g)
                     else:
-                        e = await ctx.send(embed=lib.Editable_E("No search results found", "", "Error"))
-                        await lib.erase(ctx, e)
+                        await ctx.send(embed=lib.Editable_E("No search results found", "", "Error"), delete_after=config.deltimer)
                 else:
-                    ee = await ctx.send(embed=lib.Editable_E("Error Contacting API", "", "Error"))
-                    await lib.erase(ctx, ee)
+                    await ctx.send(embed=lib.Editable_E("Error Contacting API", "", "Error"), delete_after=config.deltimer)
 
     @commands.command()
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -345,17 +336,17 @@ class Core(commands.Cog):
                 ans = num1 * num2
             elif op == "/":
                 ans = num1 / num2
-            await ctx.send(embed=lib.Editable(f"You requested {num1} {op} {num2}", f"{num1} {op} {num2} = {ans}", "Maths"))
+            await ctx.send(embed=lib.Editable(f"You requested {num1} {op} {num2}", f"{num1} {op} {num2} = {ans}", "Maths"), delete_after=config.deltimer)
         else:
-            await ctx.send(embed=lib.Editable_E("Invalid Arguments", "Usage Examples:\n\n1 + 1\n1 - 1\n 1 * 1\n 1 / 1", "Error"))
+            await ctx.send(embed=lib.Editable_E("Invalid Arguments", "Usage Examples:\n\n1 + 1\n1 - 1\n 1 * 1\n 1 / 1", "Error"), delete_after=config.deltimer)
 
     @commands.command(no_pm=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def amiadmin(self, ctx):
         if ctx.author.id in config.admins:
-            await ctx.send(f"Yes {ctx.author.mention}, you're an admin!")
+            await ctx.send(f"Yes {ctx.author.mention}, you're an admin!", delete_after=config.deltimer)
         else:
-            await ctx.send(f"You arent an admin, {ctx.author.mention}")
+            await ctx.send(f"You arent an admin, {ctx.author.mention}", delete_after=config.deltimer)
 
 # Leveling System Start ------------------------------------------------------------------
 
@@ -427,8 +418,7 @@ class Core(commands.Cog):
                 with open("./data/settings/leveling.json", "w") as f:
                     json.dump(self.levels, f)
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm())
 
     @commands.command()
     async def leaderboard(self, ctx):
@@ -471,8 +461,7 @@ class Core(commands.Cog):
                 self.levels[GID] = {"Enabled": True, "Messages": True}
                 await ctx.reinvoke()
         else:
-            p = await ctx.send(embed=lib.NoPerm())
-            await lib.erase(ctx, p)
+            await ctx.send(embed=lib.NoPerm())
 
     def db_exists(self, GID, UID):
         GID = str(GID)
