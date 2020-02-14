@@ -3,7 +3,10 @@ import discord
 import asyncio
 
 from discord.ext import commands
+from utils.functions import func
 from utils.functions.func import lib
+
+config = func.get("utils/config.json")
 
 class ErrorHandler(commands.Cog):
     def __init__(self, bot):
@@ -46,6 +49,8 @@ class ErrorHandler(commands.Cog):
         errorfile.write("[{}]: {} \n".format(datetime.datetime.utcnow().strftime("%d/%m/%Y at %H:%M:%S (System Time)"), error))
         errorfile.close()
         print("An error has been logged.")
+
+        raise error
 
 
 def setup(bot):

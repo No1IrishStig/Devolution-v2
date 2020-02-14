@@ -14,7 +14,7 @@ class Admin(commands.Cog):
         self.bot = bot
 
     @commands.group(invoke_without_command=True)
-    @commands.check(checks.is_owner)
+    @commands.check(check.is_admin)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def cog(self, ctx):
         await ctx.send(embed=lib.Editable_E("Invalid Arguments", "Options:\n\n**load** - loads named cog.\n **unload** - Unloads named cog.\n **list** - Lists all cogs.", "Cog Usage"), delete_after=config.deltimer)

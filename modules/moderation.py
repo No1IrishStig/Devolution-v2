@@ -976,15 +976,15 @@ class Moderation(commands.Cog):
             pass
         await ctx.send(embed=lib.Editable_S("Setting Role & Channel Permissions", "", "50% Completed"), delete_after=config.deltimer)
         if not role in ctx.guild.roles:
-        for channel in ctx.guild.channels:
-            role = discord.utils.get(channel.guild.roles, name="punished")
-            overwrite = discord.PermissionOverwrite()
-            overwrite.send_messages = False
-            overwrite.send_tts_messages = False
-            overwrite.add_reactions = False
-            await channel.set_permissions(role, overwrite=overwrite),
-        await asyncio.sleep(5)
-        await ctx.send(embed=lib.Editable_S("All permissions have been set.", "", "100% Completed"), delete_after=config.deltimer)
+            for channel in ctx.guild.channels:
+                role = discord.utils.get(channel.guild.roles, name="punished")
+                overwrite = discord.PermissionOverwrite()
+                overwrite.send_messages = False
+                overwrite.send_tts_messages = False
+                overwrite.add_reactions = False
+                await channel.set_permissions(role, overwrite=overwrite),
+            await asyncio.sleep(5)
+            await ctx.send(embed=lib.Editable_S("All permissions have been set.", "", "100% Completed"), delete_after=config.deltimer)
 
 
 def setup(bot):

@@ -87,7 +87,6 @@ class Core(commands.Cog):
     async def bug(self, ctx):
         await ctx.send(embed=lib.Editable("https://github.com/No1IrishStig/Devolution-Beta/issues", "", "Bug Report"), delete_after=config.deltimer)
 
-
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def info(self, ctx):
@@ -158,6 +157,29 @@ class Core(commands.Cog):
         embed.add_field(name="Voice", value=channel, inline=True)
         await ctx.send(embed=embed, delete_after=config.deltimer)
 
+    @commands.command()
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def spotify(self, ctx, user : discord.Member=None):
+        if user == None:
+            user = ctx.author
+            pass
+        if user.activities:
+            for activity in user.activities:
+                if isinstance(activity, Spotify):
+                    embed = discord.Embed(
+                        description = f"Listening to {activity.title}",
+                        colour = 0xeb8034,
+                        )
+                    embed.set_author(name = f"Devolution", icon_url="https://i.imgur.com/BS6YRcT.jpg")
+                    embed.set_thumbnail(url=activity.album_cover_url)
+                    embed.add_field(name="Artist", value=activity.artist)
+                    embed.add_field(name="Album", value=activity.album)
+
+                    embed.set_footer(text="Song Started at {}".format(activity.created_at.strftime("%H:%M:%S")))
+                    await ctx.send(embed=embed)
+                else:
+                    await ctx.send(embed=func.Editable_E("That user is not listening to Spotify", "", "Spotify"))
+
     @commands.command(no_pm=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def avatar(self, ctx, user : discord.User=None):
@@ -173,6 +195,12 @@ class Core(commands.Cog):
         embed.set_author(name=user.name, icon_url=user.avatar_url)
         embed.set_footer(text=f"Devolution - Avatar Stealer", icon_url="https://i.imgur.com/BS6YRcT.jpg")
         await ctx.send(embed=embed, delete_after=config.deltimer)
+
+    def strfdelta(self, tdelta, fmt):
+        d = {"days": tdelta.days}
+        d["hours"], rem = divmod(tdelta.seconds, 3600)
+        d["minutes"], d["seconds"] = divmod(rem, 60)
+        return fmt.format(**d)
 
 # Fun Commands --------------------------------------------------------------------------------
 
@@ -250,7 +278,7 @@ class Core(commands.Cog):
                 msg = "How original. No one else had thought of trying to get the bot to insult itself. I applaud your creativity. Yawn. Perhaps this is why you don't have friends. You don't add anything new to any conversation. You are more of a bot than me, predictable answers, and absolutely dull to have an actual conversation with."
                 await ctx.send(author.mention + msg)
             else:
-                await ctx.send(user.mention + msg + randchoice(insults)
+                await ctx.send(user.mention + msg + randchoice(insults))
         else:
             await ctx.send(author.mention + msg + randchoice(insults))
 
