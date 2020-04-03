@@ -37,12 +37,13 @@ HOUSE_STAND = False
 players_cards = []
 bot_cards = []
 
+config = func.get("./utils/config.json")
+
 class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.benefits_register = {}
         self.slot_register = {}
-        self.config = func.get("./utils/config.json")
         with open("./data/settings/economy.json") as s:
             self.settings = json.load(s)
 
@@ -121,7 +122,7 @@ class Economy(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def add(self, ctx, user: discord.Member=None, amount : int=None):
         GID = str(ctx.guild.id)
-        if ctx.author is ctx.guild.owner or ctx.author.id in self.config.admins:
+        if ctx.author is ctx.guild.owner or ctx.author.id in config.admins:
             if user and amount:
                 if self.account_check(GID, user.id):
                     if self.account_check(GID, ctx.author.id):
